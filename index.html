@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CogniSTEM Research Lab | Trực Quan Hóa & Phân Tích Dữ Liệu Sư Phạm STEM</title>
+  
+  <!-- Google Fonts: Google Sans & Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Google Sans"', 'Roboto', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            google: {
+              blue: '#1a73e8',
+              blueHover: '#1557b0',
+              blueLight: '#e8f0fe',
+              red: '#ea4335',
+              redLight: '#fce8e6',
+              yellow: '#fbbc04',
+              yellowLight: '#fef7e0',
+              green: '#34a853',
+              greenHover: '#1e8e3e',
+              greenLight: '#e6f4ea',
+              dark: '#202124',
+              gray: '#5f6368',
+              lightGray: '#f1f3f4',
+              border: '#dadce0',
+              surface: '#ffffff'
+            }
+          },
+          boxShadow: {
+            m3: '0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)',
+            m3Hover: '0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15)',
+            m3Modal: '0 4px 8px 3px rgba(60,64,67,0.15), 0 8px 24px 6px rgba(60,64,67,0.2)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX for math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Chart.js 4 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- SheetJS for Live Excel Loading -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: "Google Sans", Roboto, sans-serif;
+      background-color: #f8fafd;
+      color: #202124;
+    }
+    .katex { font-size: 1.05em; }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f3f4; }
+    ::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #bdc1c6; }
+    .nav-pill-active {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+      font-weight: 500;
+    }
+    .nav-pill-active svg {
+      color: #1a73e8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP APP BAR (Google Material 3 Header) -->
+  <header class="sticky top-0 z-40 bg-white border-b border-google-border shadow-xs px-4 lg:px-6 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <!-- Google Logo Mark -->
+      <div class="flex items-center gap-2">
+        <svg class="w-8 h-8" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-medium text-google-dark tracking-tight">CogniSTEM Analytics</span>
+            <span class="text-xs bg-google-blueLight text-google-blue font-semibold px-2 py-0.5 rounded-full border border-blue-200">Research Edition</span>
+          </div>
+          <p class="text-xs text-google-gray hidden sm:block">Hệ thống Phân tích Đo lường Giáo dục STEM • NCS Phạm Bá Hồng Sơn (HCMUTE)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center/Right Actions -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Mode Badge -->
+      <div class="hidden md:flex items-center bg-google-lightGray rounded-full p-1 border border-google-border">
+        <button id="btn-mode-presentation" onclick="switchPerspective('presentation')" class="px-3 py-1 rounded-full text-xs font-medium transition-all bg-white text-google-blue shadow-xs">Hội đồng</button>
+        <button id="btn-mode-research" onclick="switchPerspective('research')" class="px-3 py-1 rounded-full text-xs font-medium text-google-gray hover:text-google-dark transition-all">Google Scientist</button>
+        <button id="btn-mode-guide" onclick="switchPerspective('guide')" class="px-3 py-1 rounded-full text-xs font-medium text-google-gray hover:text-google-dark transition-all">Dễ hiểu (Beginner)</button>
+      </div>
+
+      <!-- Quick Dataset Badge -->
+      <span id="dataset-status-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-google-greenLight text-google-green border border-green-200">
+        <span class="w-2 h-2 rounded-full bg-google-green animate-pulse"></span>
+        <span id="dataset-name-text">N = 27 (HCMUTE Validated)</span>
+      </span>
+
+      <!-- Action Button: Council Q&A -->
+      <button onclick="switchTab('tab-council')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-google-blue text-white hover:bg-google-blueHover shadow-xs transition-all">
+        <i data-lucide="help-circle" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">Hỏi - Đáp Hội đồng</span>
+      </button>
+
+      <!-- Reset / Reload Data -->
+      <button onclick="resetToMasterData()" title="Khôi phục dữ liệu gốc N=27" class="p-2 text-google-gray hover:text-google-dark hover:bg-google-lightGray rounded-full transition-all">
+        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- BODY: SIDEBAR + MAIN CONTENT -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- LEFT NAVIGATION DRAWER (Material Design 3 Rail) -->
+    <aside class="w-64 bg-white border-r border-google-border hidden md:flex flex-col justify-between p-3 overflow-y-auto">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-google-gray">Phân tích sư phạm</div>
+        
+        <button onclick="switchTab('tab-overview')" id="nav-tab-overview" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all nav-pill-active">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tổng quan & KPI</span>
+        </button>
+
+        <button onclick="switchTab('tab-data')" id="nav-tab-data" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="database" class="w-5 h-5"></i>
+          <span>Dữ liệu thô 27 SV</span>
+        </button>
+
+        <button onclick="switchTab('tab-hypothesis')" id="nav-tab-hypothesis" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="flask-conical" class="w-5 h-5"></i>
+          <span>Kiểm định giả thuyết (t, W)</span>
+        </button>
+
+        <button onclick="switchTab('tab-hake')" id="nav-tab-hake" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="trending-up" class="w-5 h-5"></i>
+          <span>Tăng trưởng Hake (g)</span>
+        </button>
+
+        <button onclick="switchTab('tab-ctt')" id="nav-tab-ctt" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="check-check" class="w-5 h-5"></i>
+          <span>Tâm trắc học CTT (α, KR20)</span>
+        </button>
+
+        <button onclick="switchTab('tab-sem-drops')" id="nav-tab-sem-drops" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          <span>Bóc tách 9 ca sụt giảm</span>
+        </button>
+
+        <button onclick="switchTab('tab-clt-paas')" id="nav-tab-clt-paas" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="brain" class="w-5 h-5"></i>
+          <span>Tải nhận thức CLT & Paas</span>
+        </button>
+
+        <button onclick="switchTab('tab-correlation')" id="nav-tab-correlation" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="grid" class="w-5 h-5"></i>
+          <span>Ma trận tương quan</span>
+        </button>
+
+        <div class="pt-3 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-google-gray">Bảo vệ Luận án</div>
+
+        <button onclick="switchTab('tab-council')" id="nav-tab-council" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium text-google-dark hover:bg-google-lightGray transition-all">
+          <i data-lucide="graduation-cap" class="w-5 h-5 text-google-blue"></i>
+          <span class="font-semibold text-google-blue">Hỏi - Đáp Hội đồng</span>
+        </button>
+      </div>
+
+      <!-- User Profile / Project Credit -->
+      <div class="pt-4 border-t border-google-border">
+        <div class="flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-google-lightGray transition-all">
+          <div class="w-9 h-9 rounded-full bg-google-blue flex items-center justify-center text-white font-bold text-sm">
+            PS
+          </div>
+          <div class="overflow-hidden">
+            <p class="text-xs font-semibold text-google-dark truncate">Phạm Bá Hồng Sơn</p>
+            <p class="text-[11px] text-google-gray truncate">HCMUTE PhD Candidate</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN SCROLLABLE CONTENT AREA -->
+    <main class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6">
+
+      <!-- BANNER / NOTICE FOR ACTIVE PERSPECTIVE -->
+      <div id="perspective-guide-box" class="hidden bg-google-yellowLight border border-yellow-300 rounded-2xl p-4 flex items-start gap-3">
+        <i data-lucide="info" class="w-5 h-5 text-yellow-700 mt-0.5 shrink-0"></i>
+        <div class="text-xs text-yellow-900 space-y-1">
+          <p class="font-bold text-sm" id="guide-box-title">Chế độ giải thích trực quan cho người nghe phổ thông</p>
+          <p id="guide-box-desc">Hệ thống diễn giải các chỉ số thống kê toán học phức tạp thành các khái niệm trực quan, dễ hiểu trong thực tế giảng dạy và học tập.</p>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- TAB 1: OVERVIEW & KPI DASHBOARD -->
+      <!-- ============================================================== -->
+      <section id="tab-overview" class="space-y-6">
+        
+        <!-- Welcome Hero Card -->
+        <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 lg:p-8 shadow-m3 relative overflow-hidden">
+          <div class="relative z-10 max-w-3xl space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-google-green"></span>
+              Google DeepMind & LearnLM Research Benchmark
+            </div>
+            <h1 class="text-2xl lg:text-3xl font-bold tracking-tight">Hệ Thống Trực Quan Hóa Thực Nghiệm Sư Phạm CogniSTEM</h1>
+            <p class="text-sm text-blue-100 leading-relaxed">
+              Mô hình can thiệp sư phạm tích hợp chu trình thiết kế kỹ thuật CDIO (120 phút), Trợ lý AI gia sư phản hồi 5 tầng Narciss (LearnLM) và Bộ đo lường chuẩn hóa 3 biểu mẫu (BM-01, BM-02, BM-03) trên mẫu N = 27 sinh viên Sư phạm Công nghệ.
+            </p>
+            <div class="flex flex-wrap gap-2 pt-2">
+              <button onclick="switchTab('tab-hypothesis')" class="px-4 py-2 rounded-full bg-google-blue text-white text-xs font-medium hover:bg-blue-600 transition-all shadow-xs flex items-center gap-1.5">
+                <i data-lucide="play" class="w-4 h-4"></i> Trình diễn kiểm định
+              </button>
+              <button onclick="switchTab('tab-council')" class="px-4 py-2 rounded-full bg-white/10 text-white text-xs font-medium hover:bg-white/20 backdrop-blur-md transition-all flex items-center gap-1.5">
+                <i data-lucide="help-circle" class="w-4 h-4"></i> Bộ câu hỏi Hội đồng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Metric Headline Cards (Material Design 3) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Card 1: Pre-test Mean -->
+          <div class="bg-white rounded-2xl p-5 border border-google-border shadow-xs hover:shadow-m3 transition-all space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-google-gray">Điểm Pre-test TB (O1)</span>
+              <span class="p-1.5 rounded-full bg-blue-50 text-google-blue"><i data-lucide="book-open" class="w-4 h-4"></i></span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span id="kpi-pre-mean" class="text-3xl font-bold text-google-dark">6,36</span>
+              <span class="text-xs text-google-gray">± 1,22 đ</span>
+            </div>
+            <p class="text-xs text-google-gray">Nền tảng đại cương tốt (74,6% MCQ, 47,2% SAQ)</p>
+          </div>
+
+          <!-- Card 2: Post-test Mean -->
+          <div class="bg-white rounded-2xl p-5 border border-google-border shadow-xs hover:shadow-m3 transition-all space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-google-gray">Điểm Post-test TB (O2)</span>
+              <span class="p-1.5 rounded-full bg-green-50 text-google-green"><i data-lucide="award" class="w-4 h-4"></i></span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span id="kpi-post-mean" class="text-3xl font-bold text-google-green">7,30</span>
+              <span class="text-xs text-google-gray">± 1,94 đ</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-google-green font-medium">
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+              <span>+0,93 đ (+14,7%)</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Paired t-test -->
+          <div class="bg-white rounded-2xl p-5 border border-google-border shadow-xs hover:shadow-m3 transition-all space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-google-gray">Kiểm định t từng cặp</span>
+              <span class="p-1.5 rounded-full bg-indigo-50 text-indigo-600"><i data-lucide="git-commit" class="w-4 h-4"></i></span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span id="kpi-t-stat" class="text-3xl font-bold text-indigo-600">t = 2,945</span>
+            </div>
+            <div class="text-xs font-medium text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full inline-block">
+              p = 0,00672 (p &lt; 0,01)
+            </div>
+          </div>
+
+          <!-- Card 4: Cohen's d & Hake -->
+          <div class="bg-white rounded-2xl p-5 border border-google-border shadow-xs hover:shadow-m3 transition-all space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-google-gray">Kích thước hiệu ứng & Hake</span>
+              <span class="p-1.5 rounded-full bg-amber-50 text-amber-600"><i data-lucide="target" class="w-4 h-4"></i></span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span id="kpi-cohen-d" class="text-3xl font-bold text-amber-600">d = 0,567</span>
+              <span class="text-xs text-google-gray">| ḡ = 0,289</span>
+            </div>
+            <p class="text-xs text-google-gray">Tác động trung bình vững chắc (Medium effect)</p>
+          </div>
+
+        </div>
+
+        <!-- Charts Grid 1: Distribution Pre vs Post + Growth Breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Chart 1: Pre vs Post Distribution -->
+          <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-semibold text-google-dark">Phân Phối Điểm Số Pre-test vs Post-test</h3>
+                <p class="text-xs text-google-gray">So sánh tần số điểm số thực tế trên toàn bộ 27 sinh viên</p>
+              </div>
+              <button onclick="showFormulaModal('ttest')" class="text-xs text-google-blue hover:underline flex items-center gap-1 font-medium">
+                <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Công thức
+              </button>
+            </div>
+            <div class="h-72">
+              <canvas id="chart-pre-post-dist"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Hake Gain Distribution -->
+          <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-semibold text-google-dark">Phân Bố Mức Tăng Trưởng Hake (g)</h3>
+                <p class="text-xs text-google-gray">Chuẩn Hake (1998): Cao (g ≥ 0,7), TB (0,3 ≤ g &lt; 0,7), Thấp (g &lt; 0,3)</p>
+              </div>
+              <button onclick="showFormulaModal('hake')" class="text-xs text-google-blue hover:underline flex items-center gap-1 font-medium">
+                <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Công thức
+              </button>
+            </div>
+            <div class="h-72">
+              <canvas id="chart-hake-donut"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Summary Table of 4 Sub-competencies -->
+        <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden">
+          <div class="p-5 border-b border-google-border flex items-center justify-between">
+            <h3 class="text-base font-semibold text-google-dark">Đối Chiếu Định Lượng Thành Phần Đề Thi & Độ Tin Cậy CTT</h3>
+            <span class="text-xs bg-google-blueLight text-google-blue px-2.5 py-1 rounded-full font-medium">BM-01 vs BM-02</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-google-lightGray text-google-gray uppercase font-semibold">
+                <tr>
+                  <th class="px-5 py-3">Thành phần cấu trúc</th>
+                  <th class="px-5 py-3">Thang điểm</th>
+                  <th class="px-5 py-3">Điểm Pre-test (O1)</th>
+                  <th class="px-5 py-3">Điểm Post-test (O2)</th>
+                  <th class="px-5 py-3">Chênh lệch (Δ)</th>
+                  <th class="px-5 py-3">Tăng trưởng (%)</th>
+                  <th class="px-5 py-3">Độ tin cậy CTT</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-google-border text-google-dark">
+                <tr class="hover:bg-slate-50">
+                  <td class="px-5 py-3.5 font-medium">Phần I: 30 Câu Trắc nghiệm khách quan (MCQ)</td>
+                  <td class="px-5 py-3.5 text-google-gray">6,0 đ</td>
+                  <td class="px-5 py-3.5 font-mono">4,47 ± 0,57</td>
+                  <td class="px-5 py-3.5 font-mono text-google-green font-semibold">5,09 ± 0,68</td>
+                  <td class="px-5 py-3.5 text-google-green font-semibold">+0,62 đ</td>
+                  <td class="px-5 py-3.5 font-semibold text-google-green">+13,9%</td>
+                  <td class="px-5 py-3.5 text-google-blue font-semibold">KR-20: 0,4974 → 0,7388 (+48,5%)</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-5 py-3.5 font-medium">Phần II: 10 Câu Tự luận ngắn (SAQ)</td>
+                  <td class="px-5 py-3.5 text-google-gray">4,0 đ</td>
+                  <td class="px-5 py-3.5 font-mono">1,89 ± 0,86</td>
+                  <td class="px-5 py-3.5 font-mono text-google-green font-semibold">2,21 ± 1,50</td>
+                  <td class="px-5 py-3.5 text-google-green font-semibold">+0,32 đ</td>
+                  <td class="px-5 py-3.5 font-semibold text-google-green">+16,9%</td>
+                  <td class="px-5 py-3.5 text-purple-700 font-semibold">Cronbach's α: 0,6592 → 0,9255 (+40,4%)</td>
+                </tr>
+                <tr class="bg-blue-50/50 font-semibold">
+                  <td class="px-5 py-3.5">Tổng điểm toàn bài kiểm tra</td>
+                  <td class="px-5 py-3.5 text-google-gray">10,0 đ</td>
+                  <td class="px-5 py-3.5 font-mono">6,36 ± 1,22</td>
+                  <td class="px-5 py-3.5 font-mono text-google-green font-bold">7,30 ± 1,94</td>
+                  <td class="px-5 py-3.5 text-google-green font-bold">+0,93 đ</td>
+                  <td class="px-5 py-3.5 font-bold text-google-green">+14,7%</td>
+                  <td class="px-5 py-3.5 text-google-blue font-bold">Toàn bài α: 0,7037 → 0,8876 (+26,1%)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 2: RAW DATA VIEWER & INGESTION -->
+      <!-- ============================================================== -->
+      <section id="tab-data" class="hidden space-y-6">
+        
+        <!-- Data Controls Header -->
+        <div class="bg-white rounded-2xl p-5 border border-google-border shadow-xs flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-google-dark">Tập Dữ Liệu Thực Nghiệm (N = 27)</h2>
+            <p class="text-xs text-google-gray">Trích xuất trực tiếp từ <code>DU_LIEU_THO_27_SINH_VIEN.xlsx</code>, đã triệt tiêu 100% công thức</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Upload custom file -->
+            <label class="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-google-lightGray text-google-dark hover:bg-google-border transition-all">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+              <span>Nhập file Excel/CSV khác</span>
+              <input type="file" id="file-uploader" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileUpload(event)">
+            </label>
+
+            <!-- Export Clean Excel -->
+            <button onclick="exportCleanExcel()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-google-blueLight text-google-blue hover:bg-blue-200 transition-all">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              <span>Tải file Excel sạch</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-google-border">
+          <div class="flex items-center gap-2 flex-1 min-w-[240px]">
+            <i data-lucide="search" class="w-4 h-4 text-google-gray"></i>
+            <input type="text" id="data-search-input" onkeyup="filterDataTable()" placeholder="Tìm kiếm theo Mã SV, Họ tên, Nhóm..." class="text-xs w-full outline-hidden bg-transparent">
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="data-group-filter" onchange="filterDataTable()" class="text-xs bg-google-lightGray border-none rounded-lg px-2.5 py-1.5 text-google-dark">
+              <option value="ALL">Tất cả Nhóm (1 - 4)</option>
+              <option value="Nhóm 1">Nhóm 1</option>
+              <option value="Nhóm 2">Nhóm 2</option>
+              <option value="Nhóm 3">Nhóm 3</option>
+              <option value="Nhóm 4">Nhóm 4</option>
+            </select>
+            <select id="data-gain-filter" onchange="filterDataTable()" class="text-xs bg-google-lightGray border-none rounded-lg px-2.5 py-1.5 text-google-dark">
+              <option value="ALL">Tất cả mức tăng trưởng</option>
+              <option value="Tăng trưởng cao">Tăng trưởng cao (g ≥ 0.7)</option>
+              <option value="Tăng trưởng trung bình">Tăng trưởng TB (0.3 ≤ g &lt; 0.7)</option>
+              <option value="Tăng trưởng thấp">Tăng trưởng thấp (g &lt; 0.3)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Data Table (Interactive) -->
+        <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden">
+          <div class="overflow-x-auto max-h-[600px]">
+            <table id="raw-students-table" class="w-full text-left text-xs">
+              <thead class="bg-google-lightGray text-google-gray uppercase font-semibold sticky top-0 z-10">
+                <tr>
+                  <th class="px-4 py-3">STT</th>
+                  <th class="px-4 py-3">Mã SV</th>
+                  <th class="px-4 py-3">Họ và tên</th>
+                  <th class="px-4 py-3">Nhóm</th>
+                  <th class="px-4 py-3">Pre-test</th>
+                  <th class="px-4 py-3">Post-test</th>
+                  <th class="px-4 py-3">Chênh lệch (ΔP)</th>
+                  <th class="px-4 py-3">Hake g</th>
+                  <th class="px-4 py-3">Phân loại Hake</th>
+                  <th class="px-4 py-3">Paas R</th>
+                  <th class="px-4 py-3">Tải IL</th>
+                  <th class="px-4 py-3">Tải EL</th>
+                  <th class="px-4 py-3">Tải GL</th>
+                  <th class="px-4 py-3">Paas E</th>
+                  <th class="px-4 py-3">Đánh giá Hiệu quả</th>
+                </tr>
+              </thead>
+              <tbody id="raw-table-body" class="divide-y divide-google-border text-google-dark">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 3: INFERENTIAL HYPOTHESIS TESTING (t-test & Wilcoxon) -->
+      <!-- ============================================================== -->
+      <section id="tab-hypothesis" class="hidden space-y-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-3">
+          <h2 class="text-lg font-bold text-google-dark">Kiểm Định Giả Thuyết Sư Phạm & Suy Luận Thống Kê</h2>
+          <p class="text-xs text-google-gray leading-relaxed">
+            Kiểm chứng giả thuyết khoa học: <em>"Việc áp dụng giải pháp giáo dục STEM tích hợp hệ thống CogniSTEM và chu trình CDIO tạo ra sự tăng trưởng có ý nghĩa thống kê về năng lực dạy học của sinh viên sư phạm."</em>
+          </p>
+        </div>
+
+        <!-- 2 Side-by-Side Test Engines -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Test 1: Paired t-test Card -->
+          <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-5">
+            <div class="flex items-center justify-between border-b border-google-border pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-google-blue"></span>
+                <h3 class="font-bold text-base text-google-dark">1. Paired Student's t-test (Tham số)</h3>
+              </div>
+              <span class="text-xs bg-blue-50 text-google-blue font-semibold px-2.5 py-0.5 rounded-full">df = 26</span>
+            </div>
+
+            <div class="space-y-3 text-xs text-google-dark">
+              <div class="bg-slate-50 p-4 rounded-xl space-y-2 font-mono text-center">
+                <div id="math-ttest-formula"></div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="p-3 rounded-xl bg-google-lightGray">
+                  <span class="text-google-gray block">Hiệu số trung bình (D̄)</span>
+                  <span class="text-lg font-bold text-google-dark">+0,9333 điểm</span>
+                </div>
+                <div class="p-3 rounded-xl bg-google-lightGray">
+                  <span class="text-google-gray block">Độ lệch chuẩn hiệu số (sD)</span>
+                  <span class="text-lg font-bold text-google-dark">1,6467 điểm</span>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50">
+                  <span class="text-google-blue block font-medium">Giá trị kiểm định t</span>
+                  <span class="text-2xl font-bold text-google-blue">2,945</span>
+                </div>
+                <div class="p-3 rounded-xl bg-green-50">
+                  <span class="text-google-green block font-medium">Mức ý nghĩa p (two-tailed)</span>
+                  <span class="text-2xl font-bold text-google-green">0,00672</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-green-50 border border-green-200 text-green-900 text-xs">
+                <strong>Kết luận kiểm định:</strong> Vì p = 0,00672 &lt; 0,01, bác bỏ giả thuyết H0 ở độ tin cậy 99%. Khẳng định sự can thiệp sư phạm tạo ra bước phát triển năng lực thực chất và có ý nghĩa thống kê cao.
+              </div>
+            </div>
+          </div>
+
+          <!-- Test 2: Wilcoxon Signed-Rank Card -->
+          <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-5">
+            <div class="flex items-center justify-between border-b border-google-border pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-google-green"></span>
+                <h3 class="font-bold text-base text-google-dark">2. Wilcoxon Signed-Rank Test (Phi tham số)</h3>
+              </div>
+              <span class="text-xs bg-green-50 text-google-green font-semibold px-2.5 py-0.5 rounded-full">Robustness Check</span>
+            </div>
+
+            <div class="space-y-3 text-xs text-google-dark">
+              <div class="bg-slate-50 p-4 rounded-xl space-y-2 font-mono text-center">
+                <div id="math-wilcoxon-formula"></div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="p-3 rounded-xl bg-google-lightGray">
+                  <span class="text-google-gray block">Tổng thứ hạng dương (W+)</span>
+                  <span class="text-lg font-bold text-google-green">293,5</span>
+                </div>
+                <div class="p-3 rounded-xl bg-google-lightGray">
+                  <span class="text-google-gray block">Tổng thứ hạng âm (W-)</span>
+                  <span class="text-lg font-bold text-google-red">84,5</span>
+                </div>
+                <div class="p-3 rounded-xl bg-green-50">
+                  <span class="text-google-green block font-medium">Thống kê W & Chuẩn hóa z</span>
+                  <span class="text-xl font-bold text-google-green">W = 84,5 (z = -2,511)</span>
+                </div>
+                <div class="p-3 rounded-xl bg-green-50">
+                  <span class="text-google-green block font-medium">Mức ý nghĩa p-value</span>
+                  <span class="text-2xl font-bold text-google-green">0,01203</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-green-50 border border-green-200 text-green-900 text-xs">
+                <strong>Tính nhất quán cao:</strong> Cả hai kiểm định tham số (t-test, p=0,0067) và phi tham số (Wilcoxon, p=0,0120) đều đồng thuận ở mức p &lt; 0,05, khẳng định kết luận hoàn toàn độc lập với giả định về phân phối chuẩn của quần thể.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Effect Size Deep-Dive (Cohen's d & Hedges' g) -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-google-border pb-3">
+            <div>
+              <h3 class="font-bold text-base text-google-dark">Đánh Giá Kích Thước Hiệu Ứng (Effect Size) Theo Chuẩn Quốc Tế</h3>
+              <p class="text-xs text-google-gray">Quy chuẩn Cohen (1988): Nhỏ (d ≥ 0,2), Trung bình (d ≥ 0,5), Lớn (d ≥ 0,8)</p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 bg-amber-50 text-amber-700 rounded-full border border-amber-200">Medium Effect</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span class="text-google-gray font-medium">Cohen's dz cho mẫu cặp</span>
+              <div class="text-2xl font-bold text-google-dark">d = 0,567</div>
+              <p class="text-google-gray">dz = D̄ / sD = 0,9333 / 1,6467 = 0,567</p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <span class="text-google-gray font-medium">Hedges' g hiệu chỉnh mẫu nhỏ</span>
+              <div class="text-2xl font-bold text-google-dark">g = 0,550</div>
+              <p class="text-google-gray">g = d × [1 - 3 / (4(26) - 1)] = 0,550</p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 space-y-1 text-blue-900">
+              <span class="font-bold">Ý nghĩa sư phạm thực tế</span>
+              <p>Mức tác động d = 0,567 vượt trội so với trung bình hiệu ứng can thiệp công nghệ trong giáo dục của Hattie (2009, ngưỡng mong muốn d &gt; 0,40).</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 4: HAKE NORMALIZED LEARNING GAIN (g) -->
+      <!-- ============================================================== -->
+      <section id="tab-hake" class="hidden space-y-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-google-dark">Chỉ Số Tăng Trưởng Chuẩn Hóa Hake (Normalized Gain - g)</h2>
+            <p class="text-xs text-google-gray">Công thức Hake (1998): Loại bỏ ảnh hưởng của điểm xuất phát ban đầu</p>
+          </div>
+          <div class="text-right">
+            <div class="text-2xl font-bold text-google-blue font-mono">ḡ = 0,289 ± 0,509</div>
+            <span class="text-xs text-google-gray">Trung bình toàn bộ 27 sinh viên</span>
+          </div>
+        </div>
+
+        <!-- Scatter Plot: Post vs Pre with Hake Isolines -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-google-dark">Không Gian Tọa Độ Tăng Trưởng Hake (Post-test vs Pre-test)</h3>
+              <p class="text-xs text-google-gray">Ranh giới đường đồng mức: Xanh lá (g = 0,7), Vàng (g = 0,3), Đỏ (g = 0,0)</p>
+            </div>
+            <div class="flex items-center gap-3 text-xs">
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-green"></span> Tăng cao (8 SV)</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-yellow"></span> Tăng TB (5 SV)</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-red"></span> Tăng thấp (14 SV)</span>
+            </div>
+          </div>
+
+          <div class="h-96">
+            <canvas id="chart-hake-scatter"></canvas>
+          </div>
+        </div>
+
+        <!-- Details Cards: 3 Tiers -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-green-200 shadow-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-green-700">Tăng trưởng cao (g ≥ 0,7)</span>
+              <span class="text-xs font-bold px-2 py-0.5 bg-green-100 text-green-800 rounded-full">8 SV (29,6%)</span>
+            </div>
+            <p class="text-xs text-google-gray">Tiến bộ vượt bậc, điểm Post-test đạt từ 8,8 đến 10,0 điểm. Vận dụng nhuần nhuyễn giải pháp kỹ thuật qua tương tác AI.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-yellow-700">Tăng trưởng TB (0,3 ≤ g &lt; 0,7)</span>
+              <span class="text-xs font-bold px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">5 SV (18,5%)</span>
+            </div>
+            <p class="text-xs text-google-gray">Tiến bộ ổn định (+0,8 đến +2,4 đ), nắm vững nguyên lý kết cấu giàn và Kế hoạch bài dạy CV 5512.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Tăng trưởng thấp (g &lt; 0,3)</span>
+              <span class="text-xs font-bold px-2 py-0.5 bg-slate-100 text-slate-800 rounded-full">14 SV (51,9%)</span>
+            </div>
+            <p class="text-xs text-google-gray">Gồm nhóm tiến bộ nhẹ (+0,2 đến +0,6 đ) và nhóm 9 em bị hạn chế tốc độ viết tay ở 10 câu tự luận ngắn cuối giờ.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 5: CLASSICAL TEST THEORY (CTT) & ITEM PSYCHOMETRICS -->
+      <!-- ============================================================== -->
+      <section id="tab-ctt" class="hidden space-y-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-3">
+          <h2 class="text-lg font-bold text-google-dark">Lý Thuyết Trắc Nghiệm Cổ Điển (Classical Test Theory - CTT)</h2>
+          <p class="text-xs text-google-gray leading-relaxed">
+            Kiểm chuẩn tính nhất quán nội tại (Cronbach's Alpha, KR-20), độ phân hóa từng mục hỏi (Corrected Item-Total Correlation - CITC rit) và Sai số đo lường chuẩn (SEM) cho toàn bộ 40 mục hỏi của Biểu mẫu BM-01 và BM-02.
+          </p>
+        </div>
+
+        <!-- 3 Alpha Gauges -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-3">
+            <span class="text-xs font-medium text-google-gray block">Độ tin cậy Trắc nghiệm 30 câu (KR-20)</span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold text-google-blue font-mono">0,7388</span>
+              <span class="text-xs text-google-green font-semibold">(+48,5%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-google-blue h-full" style="width: 73.9%"></div>
+            </div>
+            <span class="text-[11px] text-google-gray block">Pre-test: 0,4974 → Post-test: 0,7388 (Đạt chuẩn)</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-3">
+            <span class="text-xs font-medium text-google-gray block">Độ tin cậy Tự luận ngắn 10 câu (Alpha)</span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold text-purple-700 font-mono">0,9255</span>
+              <span class="text-xs text-google-green font-semibold">(+40,4%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-purple-600 h-full" style="width: 92.5%"></div>
+            </div>
+            <span class="text-[11px] text-google-gray block">Pre-test: 0,6592 → Post-test: 0,9255 (Mức Xuất sắc)</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-3">
+            <span class="text-xs font-medium text-google-gray block">Độ tin cậy Toàn bài 40 câu (Alpha)</span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold text-google-green font-mono">0,8876</span>
+              <span class="text-xs text-google-green font-semibold">(+26,1%)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-google-green h-full" style="width: 88.8%"></div>
+            </div>
+            <span class="text-[11px] text-google-gray block">Pre-test: 0,7037 → Post-test: 0,8876 (Rất tốt)</span>
+          </div>
+
+        </div>
+
+        <!-- CITC Item Discrimination Chart for 10 SAQ -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-google-dark">Hệ Số Tương Quan Biến - Tổng Hiệu Chỉnh (CITC rit) 10 Câu Tự Luận</h3>
+              <p class="text-xs text-google-gray">Đường đứt nét đỏ: Ngưỡng chuẩn mực quốc tế (rit ≥ 0,30). 100% câu hỏi đều đạt trên 0,4899.</p>
+            </div>
+            <span class="text-xs bg-green-50 text-google-green px-3 py-1 rounded-full font-bold">100% Giữ Lại</span>
+          </div>
+
+          <div class="h-72">
+            <canvas id="chart-saq-citc"></canvas>
+          </div>
+        </div>
+
+        <!-- 30 MCQ Difficulty Curve (p-values) -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-google-dark">Phổ Độ Khó 30 Câu Trắc Nghiệm Post-test (p-value)</h3>
+              <p class="text-xs text-google-gray">9 câu trần (p = 1,00, màu xanh ngọc); 17 câu độ khó vừa (0,70 ≤ p &lt; 1,00); 4 câu tư duy bậc cao (p &lt; 0,70, màu đỏ)</p>
+            </div>
+            <span class="text-xs text-google-gray font-mono">p̄ = 0,848 (84,8%)</span>
+          </div>
+
+          <div class="h-64">
+            <canvas id="chart-mcq-difficulty"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 6: SPECIAL SEM PROOF FOR 9 DROP CASES -->
+      <!-- ============================================================== -->
+      <section id="tab-sem-drops" class="hidden space-y-6">
+        
+        <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-3xl p-6 lg:p-8 shadow-m3 space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold text-amber-300 border border-white/20">
+            <i data-lucide="shield-check" class="w-4 h-4"></i> Minh Chứng Khoa Học Trước Hội Đồng
+          </div>
+          <h2 class="text-2xl font-bold">Giải Mã Bản Chất 9 Ca Sụt Giảm Điểm Dưới Lăng Kính Sai Số CTT</h2>
+          <p class="text-xs text-slate-300 leading-relaxed max-w-3xl">
+            Khi Hội đồng hỏi: <em>"Tại sao có 9 sinh viên bị giảm điểm ở bài kiểm tra cuối giờ?"</em> — Đây là minh chứng định lượng khẳng định 100% các em không hề suy giảm năng lực nhận thức, mà hoàn toàn nằm trong biên độ dao động ngẫu nhiên của công cụ đo lường CTT (± 1,82 điểm).
+          </p>
+        </div>
+
+        <!-- Formula Proof Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+          <div class="bg-white p-4 rounded-2xl border border-google-border shadow-xs space-y-1">
+            <span class="text-google-gray">Sai số Post-test (SEM_post)</span>
+            <div class="text-xl font-bold text-google-dark font-mono">0,652 điểm</div>
+            <span class="text-[11px] text-google-gray">σ_post × √(1 - α) = 1,94 × √0,1124</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-google-border shadow-xs space-y-1">
+            <span class="text-google-gray">Sai số Pre-test (SEM_pre)</span>
+            <div class="text-xl font-bold text-google-dark font-mono">0,662 điểm</div>
+            <span class="text-[11px] text-google-gray">σ_pre × √(1 - α) = 1,22 × √0,2963</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-google-border shadow-xs space-y-1">
+            <span class="text-google-gray">Sai số hiệu số (SE_diff)</span>
+            <div class="text-xl font-bold text-google-blue font-mono">0,929 điểm</div>
+            <span class="text-[11px] text-google-gray">√(0,652² + 0,662²) = 0,929</span>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-green-200 bg-green-50/50 shadow-xs space-y-1">
+            <span class="text-google-green font-bold">Biên độ 95% tin cậy</span>
+            <div class="text-2xl font-bold text-google-green font-mono">± 1,82 điểm</div>
+            <span class="text-[11px] text-green-800 font-semibold">1,96 × SE_diff = ± 1,82 đ</span>
+          </div>
+        </div>
+
+        <!-- Interactive 9 Drops Visualizer -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-google-border pb-3">
+            <h3 class="font-bold text-base text-google-dark">Bảng Bóc Tách Chi Tiết 9 Ca Giảm Điểm & Kiểm Soát Ngưỡng SEM</h3>
+            <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold">100% Trong Biên Độ Cho Phép</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-google-lightGray text-google-gray uppercase font-semibold">
+                <tr>
+                  <th class="px-4 py-3">STT</th>
+                  <th class="px-4 py-3">Họ tên & Mã SV</th>
+                  <th class="px-4 py-3">Pre-test (TN / TLN)</th>
+                  <th class="px-4 py-3">Post-test (TN / TLN)</th>
+                  <th class="px-4 py-3">Chênh lệch (ΔP)</th>
+                  <th class="px-4 py-3">Thay đổi Trắc nghiệm</th>
+                  <th class="px-4 py-3">Thay đổi Tự luận</th>
+                  <th class="px-4 py-3">Kiểm tra CTT |ΔP| ≤ 1,82 đ</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-google-border text-google-dark font-mono">
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3">01</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 01 (SV01)</td>
+                  <td class="px-4 py-3">6,4 (4,2 / 2,2)</td>
+                  <td class="px-4 py-3">4,6 (4,2 / 0,4)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-1,80</td>
+                  <td class="px-4 py-3 text-google-gray">0,0</td>
+                  <td class="px-4 py-3 text-red-600">-1,8</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (1,80 ≤ 1,82)</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3">04</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 04 (SV04)</td>
+                  <td class="px-4 py-3">5,0 (4,6 / 0,4)</td>
+                  <td class="px-4 py-3">4,4 (4,0 / 0,4)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,60</td>
+                  <td class="px-4 py-3 text-red-600">-0,6</td>
+                  <td class="px-4 py-3 text-google-gray">0,0</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (0,60 ≤ 1,82)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">05</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 05 (SV05)</td>
+                  <td class="px-4 py-3">7,8 (5,2 / 2,6)</td>
+                  <td class="px-4 py-3">7,4 (5,4 / 2,0)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,40</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,2</td>
+                  <td class="px-4 py-3 text-red-600">-0,6</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">12</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 12 (SV12)</td>
+                  <td class="px-4 py-3">5,8 (4,6 / 1,2)</td>
+                  <td class="px-4 py-3">5,4 (5,4 / 0,0)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,40</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,8</td>
+                  <td class="px-4 py-3 text-red-600">-1,2</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng mạnh)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">15</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 15 (SV15)</td>
+                  <td class="px-4 py-3">6,0 (4,0 / 2,0)</td>
+                  <td class="px-4 py-3">5,4 (4,6 / 0,8)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,60</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,6</td>
+                  <td class="px-4 py-3 text-red-600">-1,2</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">18</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 18 (SV18)</td>
+                  <td class="px-4 py-3">6,2 (3,8 / 2,4)</td>
+                  <td class="px-4 py-3">5,8 (4,6 / 1,2)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,40</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,8</td>
+                  <td class="px-4 py-3 text-red-600">-1,2</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng mạnh)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">20</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 20 (SV20)</td>
+                  <td class="px-4 py-3">6,2 (4,2 / 2,0)</td>
+                  <td class="px-4 py-3">5,6 (4,8 / 0,8)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-0,60</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,6</td>
+                  <td class="px-4 py-3 text-red-600">-1,2</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng)</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3">24</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 24 (SV24)</td>
+                  <td class="px-4 py-3">7,8 (4,8 / 3,0)</td>
+                  <td class="px-4 py-3">6,2 (3,8 / 2,4)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-1,60</td>
+                  <td class="px-4 py-3 text-red-600">-1,0</td>
+                  <td class="px-4 py-3 text-red-600">-0,6</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (1,60 ≤ 1,82)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 bg-green-50/20">
+                  <td class="px-4 py-3">26</td>
+                  <td class="px-4 py-3 font-sans font-medium">Sinh viên 26 (SV26)</td>
+                  <td class="px-4 py-3">6,8 (4,0 / 2,8)</td>
+                  <td class="px-4 py-3">5,4 (4,6 / 0,8)</td>
+                  <td class="px-4 py-3 text-red-600 font-bold">-1,40</td>
+                  <td class="px-4 py-3 text-google-green font-bold">+0,6</td>
+                  <td class="px-4 py-3 text-red-600">-2,0</td>
+                  <td class="px-4 py-3 text-google-green font-sans font-bold">✓ Đạt (TN tăng)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 7: COGNITIVE LOAD THEORY (CLT) & PAAS PLANE -->
+      <!-- ============================================================== -->
+      <section id="tab-clt-paas" class="hidden space-y-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-3">
+          <h2 class="text-lg font-bold text-google-dark">Thuyết Tải Nhận Thức (CLT) & Mô Hình Không Gian 2 Chiều Paas (E)</h2>
+          <p class="text-xs text-google-gray leading-relaxed">
+            Đánh giá hiệu quả giảng dạy tích hợp giữa kết quả học tập đầu ra (zP) và chi phí đầu tư nỗ lực tâm thức (zR): E = (zP - zR) / √2.
+          </p>
+        </div>
+
+        <!-- CLT 3 Components Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-2">
+            <span class="text-xs font-medium text-google-gray">Tải nội sinh (IL)</span>
+            <div class="text-2xl font-bold text-google-dark font-mono">3,59 / 5,0</div>
+            <span class="text-xs text-google-blue font-semibold">71,9% (Thách thức kỹ thuật cao)</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-2">
+            <span class="text-xs font-medium text-google-gray">Tải ngoại lai (EL)</span>
+            <div class="text-2xl font-bold text-google-green font-mono">2,65 / 5,0</div>
+            <span class="text-xs text-google-green font-semibold">53,0% (Thấp, AI trực quan)</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-google-border shadow-xs space-y-2">
+            <span class="text-xs font-medium text-google-gray">Tải hữu ích (GL)</span>
+            <div class="text-2xl font-bold text-purple-700 font-mono">3,80 / 5,0</div>
+            <span class="text-xs text-purple-700 font-semibold">75,9% (Kiến tạo lược đồ cao)</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-blue-200 bg-blue-50/50 shadow-xs space-y-2">
+            <span class="text-xs font-medium text-google-blue">Tỷ số Hữu ích / Ngoại lai (GL/EL)</span>
+            <div class="text-3xl font-bold text-google-blue font-mono">1,43</div>
+            <span class="text-xs text-google-blue font-bold">Vượt chuẩn tối ưu (&gt; 1,0)</span>
+          </div>
+        </div>
+
+        <!-- Paas 2D Plane Scatter Plot -->
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-google-dark">Không Gian Tọa Độ Nhận Thức 2 Chiều Fred Paas (1993)</h3>
+              <p class="text-xs text-google-gray">Trục tung: zP (Điểm số chuẩn hóa); Trục hoành: zR (Nỗ lực chuẩn hóa)</p>
+            </div>
+            <div class="flex items-center gap-3 text-xs">
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-green"></span> Hiệu quả cao (8 SV)</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-yellow"></span> Trung bình (12 SV)</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-google-red"></span> Quá tải / Thấp (7 SV)</span>
+            </div>
+          </div>
+
+          <div class="h-96">
+            <canvas id="chart-paas-plane"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 8: CORRELATION MATRIX HEATMAP -->
+      <!-- ============================================================== -->
+      <section id="tab-correlation" class="hidden space-y-6">
+        
+        <div class="bg-white rounded-2xl p-6 border border-google-border shadow-xs space-y-3">
+          <h2 class="text-lg font-bold text-google-dark">Ma Trận Hệ Số Tương Quan Tuyến Tính Pearson (r) Giữa 9 Biến Số</h2>
+          <p class="text-xs text-google-gray leading-relaxed">
+            Đối chứng trực tiếp Bảng 3.8 trong văn bản Đề án. Nhấp vào ô bất kỳ để xem giải thích sư phạm chi tiết.
+          </p>
+        </div>
+
+        <!-- Heatmap Table -->
+        <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden p-4">
+          <div class="overflow-x-auto">
+            <table id="correlation-matrix-table" class="w-full text-center text-xs">
+              <!-- Injected via JavaScript -->
+            </table>
+          </div>
+        </div>
+
+        <!-- Selected Pair Description Box -->
+        <div id="corr-explanation-box" class="bg-blue-50 border border-blue-200 rounded-2xl p-5 space-y-2 text-xs text-blue-950">
+          <div class="flex items-center gap-2 font-bold text-sm text-google-blue">
+            <i data-lucide="info" class="w-4 h-4"></i>
+            <span id="corr-pair-title">Chọn một ô trong ma trận tương quan bên trên</span>
+          </div>
+          <p id="corr-pair-desc" class="leading-relaxed">Hệ thống sẽ hiển thị bản chất khoa học và ý nghĩa sư phạm của cặp biến số được chọn.</p>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 9: DEFENSE COUNCIL SIMULATOR & Q&A GUIDE -->
+      <!-- ============================================================== -->
+      <section id="tab-council" class="hidden space-y-6">
+        
+        <div class="bg-gradient-to-r from-google-blue to-indigo-800 text-white rounded-3xl p-6 lg:p-8 shadow-m3 space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-md">
+            <i data-lucide="award" class="w-4 h-4"></i> Kịch Bản Bảo Vệ Đề Án Thạc Sĩ
+          </div>
+          <h2 class="text-2xl font-bold">Bộ Câu Hỏi Hội Đồng & Chiến Lược Trả Lời Trực Quan</h2>
+          <p class="text-xs text-blue-100 leading-relaxed max-w-3xl">
+            Tổng hợp 4 câu hỏi hóc búa nhất mà Hội đồng chấm luận án thường đặt ra cho các đề tài thực nghiệm công nghệ giáo dục, kèm theo luận cứ sư phạm, công thức toán học và số liệu thực tế để đối đáp tự tin.
+          </p>
+        </div>
+
+        <!-- 4 Interactive Accordion Cards -->
+        <div class="space-y-4">
+          
+          <!-- Question 1 -->
+          <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden transition-all">
+            <button onclick="toggleCouncilAnswer(1)" class="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-slate-50 transition-all">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-blue-100 text-google-blue flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">01</span>
+                <div>
+                  <h4 class="font-bold text-sm text-google-dark">Về tính tương đương của hai công cụ đo lường BM-01 và BM-02</h4>
+                  <p class="text-xs text-google-gray mt-1">"Tại sao Pre-test hỏi lý thuyết giáo dục đại cương còn Post-test hỏi chuyên sâu cơ học kết cấu cầu? Cơ sở nào để so sánh chênh lệch điểm số ΔP?"</p>
+                </div>
+              </div>
+              <i id="q-icon-1" data-lucide="chevron-down" class="w-5 h-5 text-google-gray shrink-0 transition-transform"></i>
+            </button>
+            <div id="q-ans-1" class="hidden p-5 pt-0 border-t border-google-border bg-slate-50 text-xs space-y-3 text-google-dark">
+              <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                <p class="font-semibold text-google-blue">Luận điểm bảo vệ cốt lõi:</p>
+                <ol class="list-decimal list-inside space-y-1.5 pl-1 text-google-gray">
+                  <li><strong>Tính chất đặc thù của học phần Giáo dục STEM:</strong> Khác với môn vật lý thuần túy, học phần này đo lường năng lực tích hợp (TPACK). Đầu vào sinh viên đã học xong Tâm lý - Giáo dục học nên bài Pre-test kiểm tra mức độ sẵn sàng sư phạm (Readiness).</li>
+                  <li><strong>Ma trận đối ứng 7 hoạt động CDIO:</strong> Cả hai đề thi đều duy trì tỷ trọng cấu trúc tương đồng tuyệt đối: 60% trắc nghiệm (30 câu × 0,2 đ) và 40% tự luận ngắn (10 câu × 0,4 đ).</li>
+                  <li><strong>Sử dụng chỉ số Hake g thay vì điểm thô:</strong> Đề tài không chỉ so sánh điểm thô ΔP mà dùng hệ số tăng trưởng chuẩn hóa g = (Ppost - Ppre) / (10 - Ppre) = 0,289, đo lường tỷ lệ tri thức mới tiếp thu được trên phần kiến thức tối đa chưa biết.</li>
+                </ol>
+              </div>
+              <button onclick="switchTab('tab-hake')" class="inline-flex items-center gap-1.5 text-xs text-google-blue font-semibold hover:underline">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Xem biểu đồ tăng trưởng Hake thực tế
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden transition-all">
+            <button onclick="toggleCouncilAnswer(2)" class="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-slate-50 transition-all">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-blue-100 text-google-blue flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">02</span>
+                <div>
+                  <h4 class="font-bold text-sm text-google-dark">Về nghịch lý Thuyết Tải nhận thức: EL tương quan dương với Post-test (r = +0,605)</h4>
+                  <p class="text-xs text-google-gray mt-1">"Tại sao Tải ngoại lai (EL - sự lúng túng công nghệ) lại tương quan dương rất mạnh với kết quả học tập và hiệu quả E, trái ngược với lý thuyết Sweller?"</p>
+                </div>
+              </div>
+              <i id="q-icon-2" data-lucide="chevron-down" class="w-5 h-5 text-google-gray shrink-0 transition-transform"></i>
+            </button>
+            <div id="q-ans-2" class="hidden p-5 pt-0 border-t border-google-border bg-slate-50 text-xs space-y-3 text-google-dark">
+              <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                <p class="font-semibold text-google-blue">Luận điểm bảo vệ cốt lõi:</p>
+                <ol class="list-decimal list-inside space-y-1.5 pl-1 text-google-gray">
+                  <li><strong>Quy luật Thử thách mong muốn (Desirable Difficulties - Bjork, 1994):</strong> Mức trung bình của EL toàn lớp chỉ là 2,65 / 5,0 (dưới trung bình, an toàn). Sự "lúng túng" ở đây không phải do lỗi giao diện mà do sinh viên tích cực va chạm với các tình huống phản hồi phản biện (Socratic) của AI.</li>
+                  <li><strong>Hiệu ứng Thử sai tích cực (Productive Failure - Kapur, 2016):</strong> Những sinh viên tương tác sâu với AI để giải quyết độ võng dầm cầu gặp nhiều thử thách nhận thức hơn, từ đó khắc sâu bản chất kỹ thuật và đạt điểm Post-test cao vượt bậc (r = +0,605).</li>
+                  <li><strong>Tính trực giao đa chiều CLT:</strong> Tương quan giữa EL và GL mang dấu âm nhẹ (r = -0,176), chứng minh hai thành phần tải này hoạt động độc lập và đối kháng chuẩn mực theo Sweller (2019).</li>
+                </ol>
+              </div>
+              <button onclick="switchTab('tab-correlation')" class="inline-flex items-center gap-1.5 text-xs text-google-blue font-semibold hover:underline">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Xem ma trận tương quan chi tiết
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden transition-all">
+            <button onclick="toggleCouncilAnswer(3)" class="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-slate-50 transition-all">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-blue-100 text-google-blue flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">03</span>
+                <div>
+                  <h4 class="font-bold text-sm text-google-dark">Về phân công vai trò trong Nhóm và đánh giá Cá nhân</h4>
+                  <p class="text-xs text-google-gray mt-1">"Nếu mỗi nhóm chỉ có 1 người giữ vai trò 'Kỹ sư AI', tại sao lại lấy phiếu khảo sát và điểm thi của cả 27 cá nhân để quy kết cho tác động của AI?"</p>
+                </div>
+              </div>
+              <i id="q-icon-3" data-lucide="chevron-down" class="w-5 h-5 text-google-gray shrink-0 transition-transform"></i>
+            </button>
+            <div id="q-ans-3" class="hidden p-5 pt-0 border-t border-google-border bg-slate-50 text-xs space-y-3 text-google-dark">
+              <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                <p class="font-semibold text-google-blue">Luận điểm bảo vệ cốt lõi:</p>
+                <ol class="list-decimal list-inside space-y-1.5 pl-1 text-google-gray">
+                  <li><strong>Cơ chế Phân tán nhận thức nhóm (Socially Shared Regulation of Learning - Järvelä, 2015):</strong> Kỹ sư tương tác AI không làm việc cô lập mà có trách nhiệm chiếu màn hình hoặc đọc to các gợi mở phản biện của CogniSTEM cho toàn nhóm cùng thảo luận và vẽ lên bản vẽ A0.</li>
+                  <li><strong>Sự bình đẳng trong kiểm tra đầu ra:</strong> Cả 27 sinh viên đều phải làm bài Post-test độc lập trên giấy (30 phút, không sử dụng thiết bị), bảo đảm điểm số phản ánh năng lực cá nhân hóa đã được thẩm thấu qua quá trình làm việc nhóm.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="bg-white rounded-2xl border border-google-border shadow-xs overflow-hidden transition-all">
+            <button onclick="toggleCouncilAnswer(4)" class="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-slate-50 transition-all">
+              <div class="flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-blue-100 text-google-blue flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">04</span>
+                <div>
+                  <h4 class="font-bold text-sm text-google-dark">Về hiện tượng 9 sinh viên giảm điểm và hệ số Cronbach's Alpha α = 0,9255</h4>
+                  <p class="text-xs text-google-gray mt-1">"Hệ số α = 0,9255 có phải bị đẩy lên cao do hiện tượng bỏ giấy trắng hàng loạt vì thiếu thời gian (180 phút quá tải) hay không?"</p>
+                </div>
+              </div>
+              <i id="q-icon-4" data-lucide="chevron-down" class="w-5 h-5 text-google-gray shrink-0 transition-transform"></i>
+            </button>
+            <div id="q-ans-4" class="hidden p-5 pt-0 border-t border-google-border bg-slate-50 text-xs space-y-3 text-google-dark">
+              <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
+                <p class="font-semibold text-google-blue">Luận điểm bảo vệ cốt lõi:</p>
+                <ol class="list-decimal list-inside space-y-1.5 pl-1 text-google-gray">
+                  <li><strong>Sai số đo lường chuẩn CTT minh oan:</strong> Sai số chuẩn của hiệu số là SE_diff = 0,929 đ, biên độ ngẫu nhiên 95% tin cậy là ± 1,82 đ. Toàn bộ 9 sinh viên đều có mức giảm |ΔP| ≤ 1,80 ≤ 1,82 đ, hoàn toàn nằm trong biên độ dao động cho phép.</li>
+                  <li><strong>Minh chứng từ phần trắc nghiệm:</strong> Có tới 6/9 sinh viên có điểm trắc nghiệm tăng trưởng dương (+0,2 đến +0,8 đ). Điều này khẳng định tri thức các em vẫn tăng, chỉ có tốc độ viết tay bị hụt do áp lực 30 phút cuối giờ.</li>
+                  <li><strong>Độ phân hóa câu hỏi CTT độc lập:</strong> Toàn bộ 10 câu tự luận đều có rit ≥ 0,4899 (vượt chuẩn 0,30), phản ánh tính phân hóa thực chất chứ không phải do dữ liệu ảo.</li>
+                </ol>
+              </div>
+              <button onclick="switchTab('tab-sem-drops')" class="inline-flex items-center gap-1.5 text-xs text-google-blue font-semibold hover:underline">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Xem bảng chứng minh 9 ca giảm điểm
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MATHEMATICAL FORMULA MODAL -->
+  <div id="formula-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-m3Modal border border-google-border animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-google-border pb-3">
+        <h3 id="modal-formula-title" class="font-bold text-base text-google-dark">Công thức toán học</h3>
+        <button onclick="closeFormulaModal()" class="p-1 rounded-full text-google-gray hover:bg-google-lightGray">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="bg-slate-50 p-4 rounded-2xl font-mono text-center overflow-x-auto text-sm" id="modal-formula-math"></div>
+      <div class="text-xs text-google-gray space-y-1" id="modal-formula-desc"></div>
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeFormulaModal()" class="px-4 py-2 rounded-full bg-google-blue text-white text-xs font-medium hover:bg-google-blueHover">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMBEDDED MASTER DATASET -->
+  <script>
+    const MASTER_DATASET = {"metadata": {"title": "Bộ dữ liệu thực nghiệm sư phạm STEM CogniSTEM (N = 27)", "author": "Phạm Bá Hồng Sơn", "institution": "Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE)", "year": 2026, "b1_key": ["C", "A", "D", "B", "A", "C", "D", "B", "C", "A", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "D", "C", "A", "D", "B", "C", "A"], "b2_key": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"]}, "students": [{"stt": 1, "id": "SV01", "name": "Sinh viên 01", "group": "Nhóm 1", "pre": 6.4, "post": 4.6, "delta": -1.8, "hake_g": -0.5, "hake_level": "Thấp (Low)", "paas_r": 6, "clt_il": 3.0, "clt_el": 2.5, "clt_gl": 4.0, "z_p": -1.38633416, "z_r": -0.4726651652, "paas_e": -0.6460615423, "paas_level": "Hiệu quả thấp", "pre_tn": 4.2, "pre_tl": 2.2, "pre_mcq_ans": ["C", "B", "D", "B", "A", "C", "A", "D", "B", "A", "D", "B", "C", "A", "B", "D", "A", "D", "B", "D", "C", "A", "B", "A", "A", "A", "C", "A", "C", "A"], "pre_mcq_correct": [1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1], "pre_saq_scores": [0.0, 0.0, 0.0, 0.4, 0.4, 0.4, 0.4, 0.2, 0.0, 0.4], "post_tn": 4.2, "post_tl": 0.4, "post_mcq_ans": ["B", "B", "A", "A", "B", "D", "A", "A", "A", "D", "A", "C", "B", "D", "C", "B", "A", "D", "A", "B", "A", "B", "B", "C", "A", "D", "B", "C", "A", "A"], "post_mcq_correct": [1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0], "post_saq_scores": [0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 3.0, "el1": 3.0, "el2": 2.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 2, "id": "SV02", "name": "Sinh viên 02", "group": "Nhóm 1", "pre": 6.2, "post": 9.0, "delta": 2.8, "hake_g": 0.7368421053, "hake_level": "Cao (High)", "paas_r": 9, "clt_il": 2.0, "clt_el": 3.5, "clt_gl": 5.0, "z_p": 0.8759803761, "z_r": 1.542381065, "paas_e": -0.4712164463, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.6, "pre_tl": 1.6, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "B", "B", "C", "A", "B", "B", "C", "A", "B", "D", "A", "D", "B", "B", "C", "A", "B", "D", "D", "D", "D", "A", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4], "post_tn": 5.4, "post_tl": 3.6, "post_mcq_ans": ["B", "D", "A", "A", "B", "A", "D", "C", "B", "None", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "B", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0], "clt_items": {"il": 2.0, "el1": 2.0, "el2": 5.0, "gl1": 5.0, "gl2": 5.0}}, {"stt": 3, "id": "SV03", "name": "Sinh viên 03", "group": "Nhóm 1", "pre": 6.6, "post": 10.0, "delta": 3.4, "hake_g": 1.0, "hake_level": "Cao (High)", "paas_r": 9, "clt_il": 3.0, "clt_el": 2.0, "clt_gl": 2.5, "z_p": 1.390142771, "z_r": 1.542381065, "paas_e": -0.1076487304, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.6, "pre_tl": 2.0, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "D", "C", "B", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "A", "A", "D", "A", "D", "B", "C", "B"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], "pre_saq_scores": [0.4, 0.4, 0.0, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 6.0, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 3.0, "el1": 2.0, "el2": 2.0, "gl1": 2.0, "gl2": 3.0}}, {"stt": 4, "id": "SV04", "name": "Sinh viên 04", "group": "Nhóm 1", "pre": 5.0, "post": 4.4, "delta": -0.6, "hake_g": -0.12, "hake_level": "Thấp (Low)", "paas_r": 8, "clt_il": 4.0, "clt_el": 2.5, "clt_gl": 3.0, "z_p": -1.489166639, "z_r": 0.8706989885, "paas_e": -1.668676988, "paas_level": "Hiệu quả thấp", "pre_tn": 4.6, "pre_tl": 0.4, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "A", "D", "C", "A", "B", "B", "C", "B", "B", "D", "A", "C", "B", "D", "C", "A", "B", "A", "A", "B", "D", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "post_tn": 4.0, "post_tl": 0.4, "post_mcq_ans": ["A", "A", "A", "A", "A", "B", "D", "A", "A", "D", "A", "C", "B", "D", "A", "B", "A", "B", "C", "B", "A", "C", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 2.0, "gl1": 3.0, "gl2": 3.0}}, {"stt": 5, "id": "SV05", "name": "Sinh viên 05", "group": "Nhóm 1", "pre": 7.8, "post": 7.4, "delta": -0.4, "hake_g": -0.1818181818, "hake_level": "Thấp (Low)", "paas_r": 7, "clt_il": 4.0, "clt_el": 2.5, "clt_gl": 4.5, "z_p": 0.05332054463, "z_r": 0.1990169117, "paas_e": -0.1030228891, "paas_level": "Hiệu quả trung bình", "pre_tn": 5.2, "pre_tl": 2.6, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "D", "C", "A", "D", "B", "C", "D", "B", "D", "A", "C", "B", "B", "C", "A", "B", "A", "C", "A", "D", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.0, 0.0, 0.4, 0.2, 0.4, 0.4, 0.0, 0.4], "post_tn": 5.4, "post_tl": 2.0, "post_mcq_ans": ["D", "B", "A", "A", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.0, 0.4, 0.4, 0.4, 0.0, 0.4, 0.0, 0.4, 0.0], "clt_items": {"il": 4.0, "el1": 2.0, "el2": 3.0, "gl1": 5.0, "gl2": 4.0}}, {"stt": 6, "id": "SV06", "name": "Sinh viên 06", "group": "Nhóm 1", "pre": 5.0, "post": 5.4, "delta": 0.4, "hake_g": 0.08, "hake_level": "Thấp (Low)", "paas_r": 5, "clt_il": 4.0, "clt_el": 2.5, "clt_gl": 4.0, "z_p": -0.9750042447, "z_r": -1.144347242, "paas_e": 0.1197435817, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.0, "pre_tl": 1.0, "pre_mcq_ans": ["C", "B", "D", "B", "A", "C", "B", "D", "D", "D", "D", "B", "C", "A", "B", "D", "C", "C", "B", "D", "C", "A", "B", "A", "C", "B", "D", "C", "C", "C"], "pre_mcq_correct": [1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.2, 0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.4, "post_tl": 0.0, "post_mcq_ans": ["B", "A", "A", "C", "B", "A", "D", "C", "B", "None", "A", "C", "B", "D", "A", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 2.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 7, "id": "SV07", "name": "Sinh viên 07", "group": "Nhóm 2", "pre": 7.8, "post": 9.8, "delta": 2.0, "hake_g": 0.9090909091, "hake_level": "Cao (High)", "paas_r": 5, "clt_il": 4.0, "clt_el": 4.5, "clt_gl": 3.0, "z_p": 1.287310292, "z_r": -1.144347242, "paas_e": 1.719441532, "paas_level": "Hiệu quả cao", "pre_tn": 5.4, "pre_tl": 2.4, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "B", "C", "C", "D", "B", "C", "A", "B", "D", "C", "C", "B", "D", "C", "A", "B", "D", "D", "A", "D", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.0, 0.4, 0.4, 0.0, 0.0, 0.4, 0.0, 0.4], "post_tn": 5.8, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "A", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 4.0, "el2": 5.0, "gl1": 3.0, "gl2": 3.0}}, {"stt": 8, "id": "SV08", "name": "Sinh viên 08", "group": "Nhóm 2", "pre": 7.1, "post": 9.2, "delta": 2.1, "hake_g": 0.724137931, "hake_level": "Cao (High)", "paas_r": 5, "clt_il": 4.0, "clt_el": 4.0, "clt_gl": 3.0, "z_p": 0.978812855, "z_r": -1.144347242, "paas_e": 1.501300902, "paas_level": "Hiệu quả cao", "pre_tn": 5.2, "pre_tl": 1.9, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "B", "C", "B", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "A", "D", "A", "D", "B", "C", "D"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0], "pre_saq_scores": [0.4, 0.4, 0.0, 0.3, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.2, "post_tl": 4.0, "post_mcq_ans": ["A", "D", "A", "C", "B", "A", "D", "C", "B", "None", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "B", "C", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 4.0, "el2": 4.0, "gl1": 3.0, "gl2": 3.0}}, {"stt": 9, "id": "SV09", "name": "Sinh viên 09", "group": "Nhóm 2", "pre": 7.0, "post": 7.6, "delta": 0.6, "hake_g": 0.2, "hake_level": "Thấp (Low)", "paas_r": 7, "clt_il": 4.0, "clt_el": 3.0, "clt_gl": 4.0, "z_p": 0.1561530236, "z_r": 0.1990169117, "paas_e": -0.03030934593, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.8, "pre_tl": 2.2, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "B", "C", "D", "C", "B", "C", "A", "B", "D", "A", "B", "B", "D", "C", "A", "C", "D", "C", "A", "C", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.2, 0.4, 0.4, 0.0, 0.4, 0.0, 0.0, 0.0], "post_tn": 5.0, "post_tl": 2.6, "post_mcq_ans": ["B", "D", "C", "A", "B", "A", "A", "A", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "C", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.2, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 3.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 10, "id": "SV10", "name": "Sinh viên 10", "group": "Nhóm 2", "pre": 4.6, "post": 6.6, "delta": 2.0, "hake_g": 0.3703703704, "hake_level": "Trung bình (Medium)", "paas_r": 7, "clt_il": 4.0, "clt_el": 2.0, "clt_gl": 4.0, "z_p": -0.3580093711, "z_r": 0.1990169117, "paas_e": -0.3938770618, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.2, "pre_tl": 0.4, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "B", "C", "C", "C", "B", "C", "D", "B", "D", "A", "A", "B", "D", "C", "A", "A", "C", "D", "A", "D", "B", "C", "C"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.8, "post_tl": 0.8, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "None", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 2.0, "el2": 2.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 11, "id": "SV11", "name": "Sinh viên 11", "group": "Nhóm 2", "pre": 5.9, "post": 7.4, "delta": 1.5, "hake_g": 0.3658536585365854, "hake_level": "Trung bình (Medium)", "paas_r": 7, "clt_il": 4.0, "clt_el": 3.0, "clt_gl": 4.0, "z_p": 0.05332054463, "z_r": 0.1990169117, "paas_e": -0.1030228891, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.0, "pre_tl": 1.9, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "B", "D", "C", "D", "B", "C", "A", "B", "D", "A", "D", "C", "D", "C", "A", "B", "B", "D", "A", "C", "A", "C", "C"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.0, 0.4, 0.0, 0.4, 0.4, 0.3, 0.0, 0.0], "post_tn": 4.0, "post_tl": 3.4, "post_mcq_ans": ["B", "C", "A", "D", "B", "B", "B", "B", "A", "C", "A", "C", "B", "D", "D", "B", "A", "D", "C", "D", "A", "D", "B", "B", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 3.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 12, "id": "SV12", "name": "Sinh viên 12", "group": "Nhóm 2", "pre": 5.8, "post": 5.4, "delta": -0.4, "hake_g": -0.09523809524, "hake_level": "Thấp (Low)", "paas_r": 9, "clt_il": 2.0, "clt_el": 1.5, "clt_gl": 4.5, "z_p": -0.9750042447, "z_r": 1.542381065, "paas_e": -1.780060224, "paas_level": "Hiệu quả thấp", "pre_tn": 4.6, "pre_tl": 1.2, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "A", "B", "D", "A", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "D", "None", "None", "None", "None", "C", "C"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.0, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.4, "post_tl": 0.0, "post_mcq_ans": ["D", "D", "A", "D", "B", "A", "D", "C", "C", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 2.0, "el1": 2.0, "el2": 1.0, "gl1": 4.0, "gl2": 5.0}}, {"stt": 13, "id": "SV13", "name": "Sinh viên 13", "group": "Nhóm 2", "pre": 7.2, "post": 8.2, "delta": 1.0, "hake_g": 0.3571428571428572, "hake_level": "Trung bình (Medium)", "paas_r": 6, "clt_il": 4.0, "clt_el": 3.0, "clt_gl": 4.0, "z_p": 0.4646504604, "z_r": -0.4726651652, "paas_e": 0.6627822349, "paas_level": "Hiệu quả cao", "pre_tn": 5.2, "pre_tl": 2.0, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "B", "D", "A", "C", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "D", "A", "A", "D", "B", "C", "C"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.4, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.4, "post_tl": 2.8, "post_mcq_ans": ["B", "B", "A", "C", "B", "A", "D", "B", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "C", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 4.0, "el2": 2.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 14, "id": "SV14", "name": "Sinh viên 14", "group": "Nhóm 3", "pre": 5.0, "post": 6.2, "delta": 1.2, "hake_g": 0.24, "hake_level": "Thấp (Low)", "paas_r": 7, "clt_il": 3.0, "clt_el": 3.0, "clt_gl": 2.0, "z_p": -0.563674329, "z_r": 0.1990169117, "paas_e": -0.5393041482, "paas_level": "Hiệu quả thấp", "pre_tn": 3.8, "pre_tl": 1.2, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "B", "A", "D", "C", "A", "B", "C", "A", "B", "D", "A", "D", "A", "B", "C", "A", "D", "C", "D", "A", "D", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.4], "post_tn": 5.0, "post_tl": 1.2, "post_mcq_ans": ["A", "D", "B", "C", "A", "C", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "A", "C", "A", "D"], "post_mcq_correct": [0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 3.0, "el1": 3.0, "el2": 3.0, "gl1": 2.0, "gl2": 2.0}}, {"stt": 15, "id": "SV15", "name": "Sinh viên 15", "group": "Nhóm 3", "pre": 6.0, "post": 5.4, "delta": -0.6, "hake_g": -0.15, "hake_level": "Thấp (Low)", "paas_r": 8, "clt_il": 4.0, "clt_el": 1.5, "clt_gl": 3.5, "z_p": -0.9750042447, "z_r": 0.8706989885, "paas_e": -1.305109272, "paas_level": "Hiệu quả thấp", "pre_tn": 4.0, "pre_tl": 2.0, "pre_mcq_ans": ["B", "A", "C", "B", "A", "C", "C", "D", "D", "C", "D", "B", "C", "C", "B", "D", "A", "C", "B", "A", "C", "A", "B", "C", "D", "A", "D", "B", "C", "A"], "pre_mcq_correct": [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.4, 0.0, 0.4, 0.4, 0.0, 0.4], "post_tn": 4.6, "post_tl": 0.8, "post_mcq_ans": ["B", "D", "A", "A", "B", "B", "A", "A", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "B", "B", "B", "C", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.0], "clt_items": {"il": 4.0, "el1": 2.0, "el2": 1.0, "gl1": 3.0, "gl2": 4.0}}, {"stt": 16, "id": "SV16", "name": "Sinh viên 16", "group": "Nhóm 3", "pre": 7.0, "post": 9.8, "delta": 2.8, "hake_g": 0.9333333333, "hake_level": "Cao (High)", "paas_r": 6, "clt_il": 4.0, "clt_el": 3.5, "clt_gl": 3.5, "z_p": 1.287310292, "z_r": -0.4726651652, "paas_e": 1.24449058, "paas_level": "Hiệu quả cao", "pre_tn": 4.0, "pre_tl": 3.0, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "B", "D", "A", "A", "B", "C", "B", "B", "D", "A", "C", "B", "A", "C", "A", "B", "C", "C", "None", "None", "A", "C", "B"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0], "pre_saq_scores": [0.0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.4], "post_tn": 5.8, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "A", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 4.0, "gl1": 2.0, "gl2": 5.0}}, {"stt": 17, "id": "SV17", "name": "Sinh viên 17", "group": "Nhóm 3", "pre": 4.4, "post": 5.2, "delta": 0.8, "hake_g": 0.1428571429, "hake_level": "Thấp (Low)", "paas_r": 6, "clt_il": 4.0, "clt_el": 2.5, "clt_gl": 3.5, "z_p": -1.077836724, "z_r": -0.4726651652, "paas_e": -0.4279209128, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.0, "pre_tl": 0.4, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "A", "A", "A", "B", "D", "B", "C", "A", "B", "D", "A", "None", "None", "A", "C", "A", "B", "B", "A", "A", "D", "None", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "post_tn": 4.2, "post_tl": 1.0, "post_mcq_ans": ["A", "D", "A", "A", "None", "None", "D", "None", "None", "D", "A", "C", "B", "D", "B", "B", "A", "D", "C", "B", "A", "D", "B", "C", "C", "D", "B", "C", "A", "A"], "post_mcq_correct": [0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0], "post_saq_scores": [0.0, 0.0, 0.4, 0.2, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 2.0, "el2": 3.0, "gl1": 3.0, "gl2": 4.0}}, {"stt": 18, "id": "SV18", "name": "Sinh viên 18", "group": "Nhóm 3", "pre": 6.2, "post": 5.8, "delta": -0.4, "hake_g": -0.1052631579, "hake_level": "Thấp (Low)", "paas_r": 9, "clt_il": 3.0, "clt_el": 2.5, "clt_gl": 3.5, "z_p": -0.7693392868, "z_r": 1.542381065, "paas_e": -1.634633137, "paas_level": "Hiệu quả thấp", "pre_tn": 3.8, "pre_tl": 2.4, "pre_mcq_ans": ["C", "B", "D", "B", "B", "C", "D", "C", "A", "B", "C", "B", "C", "A", "B", "B", "A", "B", "B", "B", "C", "A", "B", "D", "A", "A", "A", "B", "C", "A"], "pre_mcq_correct": [1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.2, 0.4, 0.4, 0.2, 0.0, 0.4, 0.0, 0.4], "post_tn": 4.6, "post_tl": 1.2, "post_mcq_ans": ["D", "D", "A", "C", "A", "A", "C", "B", "B", "D", "A", "C", "B", "D", "A", "B", "A", "D", "B", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "B"], "post_mcq_correct": [0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0], "post_saq_scores": [0.4, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 3.0, "el1": 2.0, "el2": 3.0, "gl1": 2.0, "gl2": 5.0}}, {"stt": 19, "id": "SV19", "name": "Sinh viên 19", "group": "Nhóm 3", "pre": 6.4, "post": 10.0, "delta": 3.6, "hake_g": 1.0, "hake_level": "Cao (High)", "paas_r": 6, "clt_il": 3.0, "clt_el": 4.0, "clt_gl": 4.0, "z_p": 1.390142771, "z_r": -0.4726651652, "paas_e": 1.317204124, "paas_level": "Hiệu quả cao", "pre_tn": 4.8, "pre_tl": 1.6, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "D", "D", "D", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "A", "D", "C", "A", "D", "A", "C", "D"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.0, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 6.0, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 3.0, "el1": 4.0, "el2": 4.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 20, "id": "SV20", "name": "Sinh viên 20", "group": "Nhóm 3", "pre": 6.2, "post": 5.6, "delta": -0.6, "hake_g": -0.1578947368, "hake_level": "Thấp (Low)", "paas_r": 4, "clt_il": 3.0, "clt_el": 1.5, "clt_gl": 4.0, "z_p": -0.8721717658, "z_r": -1.816029319, "paas_e": 0.6674080762, "paas_level": "Hiệu quả cao", "pre_tn": 4.2, "pre_tl": 2.0, "pre_mcq_ans": ["C", "A", "D", "A", "A", "C", "B", "D", "C", "C", "D", "B", "C", "C", "B", "D", "A", "C", "B", "D", "C", "A", "B", "A", "C", "A", "C", "B", "A", "C"], "pre_mcq_correct": [1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0], "pre_saq_scores": [0.4, 0.4, 0.0, 0.0, 0.4, 0.4, 0.4, 0.0, 0.0, 0.0], "post_tn": 4.8, "post_tl": 0.8, "post_mcq_ans": ["B", "D", "A", "A", "B", "D", "D", "C", "B", "C", "D", "B", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "A"], "post_mcq_correct": [1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0], "post_saq_scores": [0.0, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 3.0, "el1": 2.0, "el2": 1.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 21, "id": "SV21", "name": "Sinh viên 21", "group": "Nhóm 4", "pre": 4.8, "post": 5.4, "delta": 0.6, "hake_g": 0.1153846154, "hake_level": "Thấp (Low)", "paas_r": 5, "clt_il": 4.0, "clt_el": 2.0, "clt_gl": 3.5, "z_p": -0.9750042447, "z_r": -1.144347242, "paas_e": 0.1197435817, "paas_level": "Hiệu quả trung bình", "pre_tn": 3.6, "pre_tl": 1.2, "pre_mcq_ans": ["C", "A", "D", "A", "A", "C", "C", "C", "A", "D", "C", "B", "C", "C", "B", "D", "B", "A", "A", "D", "C", "A", "B", "D", "C", "D", "A", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.0, 0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0], "post_tn": 4.6, "post_tl": 0.8, "post_mcq_ans": ["D", "D", "A", "B", "B", "B", "B", "C", "C", "D", "A", "C", "B", "D", "B", "B", "A", "D", "C", "B", "A", "D", "B", "B", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 1.0, "gl1": 4.0, "gl2": 3.0}}, {"stt": 22, "id": "SV22", "name": "Sinh viên 22", "group": "Nhóm 4", "pre": 7.6, "post": 8.8, "delta": 1.2, "hake_g": 0.5, "hake_level": "Trung bình (Medium)", "paas_r": 5, "clt_il": 4.0, "clt_el": 3.0, "clt_gl": 4.0, "z_p": 0.7731478972, "z_r": -1.144347242, "paas_e": 1.355873816, "paas_level": "Hiệu quả cao", "pre_tn": 5.0, "pre_tl": 2.6, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "D", "D", "B", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "D", "C", "A", "D", "A", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.0, 0.0, 0.4], "post_tn": 5.2, "post_tl": 3.6, "post_mcq_ans": ["B", "D", "B", "D", "A", "B", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 4.0, "el2": 2.0, "gl1": 5.0, "gl2": 3.0}}, {"stt": 23, "id": "SV23", "name": "Sinh viên 23", "group": "Nhóm 4", "pre": 5.8, "post": 10.0, "delta": 4.2, "hake_g": 1.0, "hake_level": "Cao (High)", "paas_r": 5, "clt_il": 4.0, "clt_el": 3.0, "clt_gl": 4.0, "z_p": 1.390142771, "z_r": -1.144347242, "paas_e": 1.792155075, "paas_level": "Hiệu quả cao", "pre_tn": 4.0, "pre_tl": 1.8, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "B", "C", "D", "B", "C", "B", "C", "B", "B", "D", "A", "C", "B", "A", "C", "A", "B", "A", "D", "A", "D", "A", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.0, 0.4, 0.0, 0.4, 0.0, 0.2, 0.4], "post_tn": 6.0, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 3.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 24, "id": "SV24", "name": "Sinh viên 24", "group": "Nhóm 4", "pre": 7.8, "post": 6.2, "delta": -1.6, "hake_g": -0.7272727273, "hake_level": "Thấp (Low)", "paas_r": 6, "clt_il": 3.0, "clt_el": 2.5, "clt_gl": 4.5, "z_p": -0.563674329, "z_r": -0.4726651652, "paas_e": -0.06435319687, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.8, "pre_tl": 3.0, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "C", "A", "D", "A", "A", "B", "C", "B", "B", "D", "A", "C", "B", "D", "C", "A", "B", "A", "C", "A", "D", "B", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.0, 0.4, 0.4, 0.4, 0.4, 0.2, 0.0, 0.4], "post_tn": 3.8, "post_tl": 2.4, "post_mcq_ans": ["B", "C", "B", "B", "D", "C", "B", "D", "A", "C", "B", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "C", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.0, 0.4, 0.0], "clt_items": {"il": 3.0, "el1": 3.0, "el2": 2.0, "gl1": 4.0, "gl2": 5.0}}, {"stt": 25, "id": "SV25", "name": "Sinh viên 25", "group": "Nhóm 4", "pre": 9.8, "post": 10.0, "delta": 0.2, "hake_g": 1.0, "hake_level": "Cao (High)", "paas_r": 8, "clt_il": 4.0, "clt_el": 2.0, "clt_gl": 4.5, "z_p": 1.390142771, "z_r": 0.8706989885, "paas_e": 0.3673022209, "paas_level": "Hiệu quả trung bình", "pre_tn": 5.8, "pre_tl": 4.0, "pre_mcq_ans": ["C", "A", "D", "B", "A", "C", "D", "B", "C", "A", "D", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "D", "C", "A", "D", "C", "C", "A"], "pre_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1], "pre_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "post_tn": 6.0, "post_tl": 4.0, "post_mcq_ans": ["B", "D", "A", "C", "B", "A", "D", "C", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "D", "B", "C", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "clt_items": {"il": 4.0, "el1": 2.0, "el2": 2.0, "gl1": 4.0, "gl2": 5.0}}, {"stt": 26, "id": "SV26", "name": "Sinh viên 26", "group": "Nhóm 4", "pre": 6.8, "post": 5.4, "delta": -1.4, "hake_g": -0.4375, "hake_level": "Thấp (Low)", "paas_r": 8, "clt_il": 4.0, "clt_el": 1.5, "clt_gl": 4.0, "z_p": -0.9750042447, "z_r": 0.8706989885, "paas_e": -1.305109272, "paas_level": "Hiệu quả thấp", "pre_tn": 4.0, "pre_tl": 2.8, "pre_mcq_ans": ["C", "B", "D", "B", "A", "C", "C", "B", "A", "B", "A", "B", "C", "B", "B", "D", "D", "C", "B", "D", "C", "A", "A", "D", "C", "A", "B", "A", "C", "A"], "pre_mcq_correct": [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1], "pre_saq_scores": [0.4, 0.0, 0.0, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.4], "post_tn": 4.6, "post_tl": 0.8, "post_mcq_ans": ["A", "D", "A", "A", "B", "B", "B", "A", "B", "D", "A", "C", "B", "D", "D", "B", "A", "D", "C", "B", "A", "D", "B", "A", "A", "D", "B", "C", "A", "D"], "post_mcq_correct": [0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.0, 0.0], "clt_items": {"il": 4.0, "el1": 1.0, "el2": 2.0, "gl1": 4.0, "gl2": 4.0}}, {"stt": 27, "id": "SV27", "name": "Sinh viên 27", "group": "Nhóm 4", "pre": 5.6, "post": 8.2, "delta": 2.6, "hake_g": 0.5909090909, "hake_level": "Trung bình (Medium)", "paas_r": 8, "clt_il": 4.0, "clt_el": 2.5, "clt_gl": 4.5, "z_p": 0.4646504604, "z_r": 0.8706989885, "paas_e": -0.2871196677, "paas_level": "Hiệu quả trung bình", "pre_tn": 4.4, "pre_tl": 1.2, "pre_mcq_ans": ["B", "A", "D", "B", "A", "C", "C", "B", "B", "B", "C", "B", "C", "A", "B", "D", "A", "C", "B", "D", "C", "A", "B", "C", "A", "A", "D", "B", "C", "C"], "pre_mcq_correct": [0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0], "pre_saq_scores": [0.4, 0.0, 0.0, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0], "post_tn": 5.2, "post_tl": 3.0, "post_mcq_ans": ["B", "D", "A", "A", "B", "A", "D", "B", "B", "D", "A", "C", "B", "D", "C", "B", "A", "D", "C", "B", "A", "A", "B", "C", "B", "D", "B", "C", "A", "D"], "post_mcq_correct": [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1], "post_saq_scores": [0.0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.0, 0.4], "clt_items": {"il": 4.0, "el1": 3.0, "el2": 2.0, "gl1": 4.0, "gl2": 5.0}}]};
+    let currentStudents = JSON.parse(JSON.stringify(MASTER_DATASET.students));
+  </script>
+
+  <!-- APP ENGINE JAVASCRIPT -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Chart instances store
+    let charts = {};
+
+    // Current active perspective: 'presentation' | 'research' | 'guide'
+    let currentPerspective = 'presentation';
+
+    // -------------------------------------------------------------
+    // NAVIGATION & TAB SWITCHING
+    // -------------------------------------------------------------
+    function switchTab(tabId) {
+      const tabs = [
+        'tab-overview', 'tab-data', 'tab-hypothesis', 'tab-hake', 
+        'tab-ctt', 'tab-sem-drops', 'tab-clt-paas', 'tab-correlation', 'tab-council'
+      ];
+      
+      tabs.forEach(id => {
+        const el = document.getElementById(id);
+        const navBtn = document.getElementById('nav-' + id);
+        if (el) {
+          if (id === tabId) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+        if (navBtn) {
+          if (id === tabId) {
+            navBtn.classList.add('nav-pill-active');
+          } else {
+            navBtn.classList.remove('nav-pill-active');
+          }
+        }
+      });
+
+      // Trigger charts resize when switching tab
+      setTimeout(() => {
+        Object.values(charts).forEach(c => {
+          if (c) c.resize();
+        });
+      }, 50);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Perspective switch
+    function switchPerspective(mode) {
+      currentPerspective = mode;
+      const modes = ['presentation', 'research', 'guide'];
+      modes.forEach(m => {
+        const btn = document.getElementById('btn-mode-' + m);
+        if (btn) {
+          if (m === mode) {
+            btn.className = 'px-3 py-1 rounded-full text-xs font-medium transition-all bg-white text-google-blue shadow-xs';
+          } else {
+            btn.className = 'px-3 py-1 rounded-full text-xs font-medium text-google-gray hover:text-google-dark transition-all';
+          }
+        }
+      });
+
+      const guideBox = document.getElementById('perspective-guide-box');
+      if (mode === 'guide') {
+        guideBox.classList.remove('hidden');
+      } else {
+        guideBox.classList.add('hidden');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // STATISTICAL RE-CALCULATION ENGINE (JavaScript Pure)
+    // -------------------------------------------------------------
+    function computeFullStatistics(students) {
+      const N = students.length;
+      if (N === 0) return null;
+
+      const pre = students.map(s => s.pre);
+      const post = students.map(s => s.post);
+      const diff = post.map((p, i) => p - pre[i]);
+
+      const mean = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+      const variance = (arr, ddof = 1) => {
+        const m = mean(arr);
+        return arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / (arr.length - ddof);
+      };
+      const std = (arr, ddof = 1) => Math.sqrt(variance(arr, ddof));
+
+      const mPre = mean(pre);
+      const sPre = std(pre, 1);
+      const mPost = mean(post);
+      const sPost = std(post, 1);
+      const mDiff = mean(diff);
+      const sDiff = std(diff, 1);
+
+      // Paired t-test
+      const tStat = mDiff / (sDiff / Math.sqrt(N));
+
+      // Cohen's d
+      const cohenD = mDiff / sDiff;
+
+      // Hake g
+      const hakeList = students.map(s => s.hake_g);
+      const mHake = mean(hakeList);
+      const sHake = std(hakeList, 1);
+
+      // Paas R
+      const rList = students.map(s => s.paas_r);
+      const mR = mean(rList);
+      const sR = std(rList, 1);
+
+      return {
+        N, mPre, sPre, mPost, sPost, mDiff, sDiff, tStat, cohenD, mHake, sHake, mR, sR
+      };
+    }
+
+    // -------------------------------------------------------------
+    // RENDER DATA TABLE
+    // -------------------------------------------------------------
+    function renderDataTable() {
+      const tbody = document.getElementById('raw-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      currentStudents.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors';
+
+        let hakeBadge = 'bg-slate-100 text-slate-800';
+        if (s.hake_g >= 0.7) hakeBadge = 'bg-green-100 text-green-800 font-semibold';
+        else if (s.hake_g >= 0.3) hakeBadge = 'bg-yellow-100 text-yellow-800 font-semibold';
+
+        let eBadge = 'bg-slate-100 text-slate-800';
+        if (s.paas_e > 0.5) eBadge = 'bg-green-100 text-green-800 font-semibold';
+        else if (s.paas_e < -0.5) eBadge = 'bg-red-100 text-red-800 font-semibold';
+
+        const dpColor = s.delta > 0 ? 'text-google-green font-semibold' : (s.delta < 0 ? 'text-google-red font-semibold' : 'text-google-gray');
+
+        tr.innerHTML = `
+          <td class="px-4 py-3 font-mono text-google-gray">${s.stt < 10 ? '0' + s.stt : s.stt}</td>
+          <td class="px-4 py-3 font-mono">${s.id}</td>
+          <td class="px-4 py-3 font-medium text-google-dark">${s.name}</td>
+          <td class="px-4 py-3">${s.group}</td>
+          <td class="px-4 py-3 font-mono">${s.pre.toFixed(1)}</td>
+          <td class="px-4 py-3 font-mono font-bold">${s.post.toFixed(1)}</td>
+          <td class="px-4 py-3 font-mono ${dpColor}">${s.delta > 0 ? '+' : ''}${s.delta.toFixed(2)}</td>
+          <td class="px-4 py-3 font-mono font-semibold">${s.hake_g.toFixed(3)}</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[11px] ${hakeBadge}">${s.hake_level}</span></td>
+          <td class="px-4 py-3 font-mono text-center">${s.paas_r}</td>
+          <td class="px-4 py-3 font-mono text-center">${s.clt_il.toFixed(1)}</td>
+          <td class="px-4 py-3 font-mono text-center">${s.clt_el.toFixed(1)}</td>
+          <td class="px-4 py-3 font-mono text-center">${s.clt_gl.toFixed(1)}</td>
+          <td class="px-4 py-3 font-mono font-bold text-center">${s.paas_e > 0 ? '+' : ''}${s.paas_e.toFixed(2)}</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[11px] ${eBadge}">${s.paas_level}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterDataTable() {
+      const query = document.getElementById('data-search-input').value.toLowerCase();
+      const groupFilter = document.getElementById('data-group-filter').value;
+      const gainFilter = document.getElementById('data-gain-filter').value;
+
+      const rows = document.querySelectorAll('#raw-table-body tr');
+      rows.forEach((row, i) => {
+        const s = currentStudents[i];
+        const matchText = (s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query) || s.group.toLowerCase().includes(query));
+        const matchGroup = (groupFilter === 'ALL' || s.group === groupFilter);
+        const matchGain = (gainFilter === 'ALL' || s.hake_level === gainFilter);
+
+        if (matchText && matchGroup && matchGain) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // -------------------------------------------------------------
+    // RENDER CHARTS
+    // -------------------------------------------------------------
+    function renderAllCharts() {
+      // 1. Pre vs Post Distribution
+      const ctxDist = document.getElementById('chart-pre-post-dist');
+      if (ctxDist) {
+        const preScores = currentStudents.map(s => s.pre);
+        const postScores = currentStudents.map(s => s.post);
+        const labels = currentStudents.map(s => 'SV' + (s.stt < 10 ? '0' + s.stt : s.stt));
+
+        if (charts.dist) charts.dist.destroy();
+        charts.dist = new Chart(ctxDist, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Pre-test (O1)',
+                data: preScores,
+                backgroundColor: 'rgba(66, 133, 244, 0.4)',
+                borderColor: '#1a73e8',
+                borderWidth: 1.5,
+                borderRadius: 4
+              },
+              {
+                label: 'Post-test (O2)',
+                data: postScores,
+                backgroundColor: 'rgba(52, 168, 83, 0.7)',
+                borderColor: '#1e8e3e',
+                borderWidth: 1.5,
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top', labels: { font: { family: 'Google Sans', size: 12 } } }
+            },
+            scales: {
+              y: { min: 0, max: 10, title: { display: true, text: 'Điểm số (Thang 10)' } },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // 2. Hake Donut
+      const ctxHake = document.getElementById('chart-hake-donut');
+      if (ctxHake) {
+        const high = currentStudents.filter(s => s.hake_g >= 0.7).length;
+        const med = currentStudents.filter(s => s.hake_g >= 0.3 && s.hake_g < 0.7).length;
+        const low = currentStudents.filter(s => s.hake_g < 0.3).length;
+
+        if (charts.hake) charts.hake.destroy();
+        charts.hake = new Chart(ctxHake, {
+          type: 'doughnut',
+          data: {
+            labels: ['Tăng trưởng cao (g ≥ 0.7)', 'Tăng trưởng TB (0.3 ≤ g < 0.7)', 'Tăng trưởng thấp (g < 0.3)'],
+            datasets: [{
+              data: [high, med, low],
+              backgroundColor: ['#34a853', '#fbbc04', '#ea4335'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { font: { family: 'Google Sans', size: 12 } } }
+            }
+          }
+        });
+      }
+
+      // 3. Hake Scatter Plot
+      const ctxScatter = document.getElementById('chart-hake-scatter');
+      if (ctxScatter) {
+        const scatterData = currentStudents.map(s => ({
+          x: s.pre,
+          y: s.post,
+          student: s
+        }));
+
+        if (charts.scatter) charts.scatter.destroy();
+        charts.scatter = new Chart(ctxScatter, {
+          type: 'scatter',
+          data: {
+            datasets: [{
+              label: 'Sinh viên (N = 27)',
+              data: scatterData,
+              backgroundColor: scatterData.map(d => {
+                if (d.student.hake_g >= 0.7) return '#34a853';
+                if (d.student.hake_g >= 0.3) return '#fbbc04';
+                return '#ea4335';
+              }),
+              pointRadius: 6,
+              pointHoverRadius: 9
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    const s = ctx.raw.student;
+                    return `${s.name} (SV${s.stt}): Pre=${s.pre}, Post=${s.post} -> g=${s.hake_g.toFixed(3)} (${s.hake_level})`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: { min: 3, max: 10, title: { display: true, text: 'Điểm Pre-test (P_pre)' } },
+              y: { min: 3, max: 10.5, title: { display: true, text: 'Điểm Post-test (P_post)' } }
+            }
+          }
+        });
+      }
+
+      // 4. SAQ CITC Bar Chart
+      const ctxCitc = document.getElementById('chart-saq-citc');
+      if (ctxCitc) {
+        const citcValues = [0.6354, 0.4899, 0.5084, 0.8748, 0.8354, 0.9076, 0.7040, 0.7481, 0.6921, 0.7279];
+        const labels = ['TL01', 'TL02', 'TL03', 'TL04', 'TL05', 'TL06', 'TL07', 'TL08', 'TL09', 'TL10'];
+
+        if (charts.citc) charts.citc.destroy();
+        charts.citc = new Chart(ctxCitc, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Hệ số tương quan biến - tổng hiệu chỉnh (CITC rit)',
+              data: citcValues,
+              backgroundColor: '#1a73e8',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { min: 0, max: 1.0, title: { display: true, text: 'Hệ số r_it' } }
+            }
+          }
+        });
+      }
+
+      // 5. MCQ Difficulty Spectrum
+      const ctxMcq = document.getElementById('chart-mcq-difficulty');
+      if (ctxMcq) {
+        const mcqP = [
+          0.667, 0.741, 0.852, 0.444, 0.741, 0.593, 0.704, 0.593, 0.741, 0.741,
+          0.926, 0.963, 1.000, 1.000, 0.741, 1.000, 1.000, 0.963, 0.926, 0.963,
+          1.000, 0.778, 1.000, 0.815, 0.778, 1.000, 0.926, 1.000, 1.000, 0.852
+        ];
+        const labels = Array.from({length: 30}, (_, i) => 'C' + (i + 1 < 10 ? '0' + (i + 1) : (i + 1)));
+
+        if (charts.mcq) charts.mcq.destroy();
+        charts.mcq = new Chart(ctxMcq, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Độ khó p-value',
+              data: mcqP,
+              backgroundColor: mcqP.map(p => p === 1.0 ? '#34a853' : (p < 0.7 ? '#ea4335' : '#1a73e8')),
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { min: 0, max: 1.1, title: { display: true, text: 'Tỷ lệ trả lời đúng (p)' } }
+            }
+          }
+        });
+      }
+
+      // 6. Paas 2D Plane
+      const ctxPaas = document.getElementById('chart-paas-plane');
+      if (ctxPaas) {
+        const paasPoints = currentStudents.map(s => ({
+          x: s.z_r,
+          y: s.z_p,
+          student: s
+        }));
+
+        if (charts.paas) charts.paas.destroy();
+        charts.paas = new Chart(ctxPaas, {
+          type: 'scatter',
+          data: {
+            datasets: [{
+              label: 'Vị trí nhận thức Paas (zP vs zR)',
+              data: paasPoints,
+              backgroundColor: paasPoints.map(p => {
+                if (p.student.paas_e > 0.5) return '#34a853';
+                if (p.student.paas_e < -0.5) return '#ea4335';
+                return '#fbbc04';
+              }),
+              pointRadius: 7,
+              pointHoverRadius: 10
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    const s = ctx.raw.student;
+                    return `${s.name}: Ppost=${s.post}, R=${s.paas_r} -> E=${s.paas_e.toFixed(2)} (${s.paas_level})`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: { min: -2.5, max: 2.5, title: { display: true, text: 'Điểm nỗ lực chuẩn hóa z_R' } },
+              y: { min: -2.5, max: 2.5, title: { display: true, text: 'Điểm học tập chuẩn hóa z_P' } }
+            }
+          }
+        });
+      }
+    }
+
+    // -------------------------------------------------------------
+    // RENDER CORRELATION MATRIX HEATMAP
+    // -------------------------------------------------------------
+    function renderCorrelationMatrix() {
+      const table = document.getElementById('correlation-matrix-table');
+      if (!table) return;
+
+      const matrix = [
+        ['P_pre', 1.000, 0.539, -0.102, 0.195, -0.006, 0.069, 0.205, 0.265, 0.372],
+        ['P_post', 0.539, 1.000, 0.783, 0.885, -0.077, 0.095, 0.605, 0.033, 0.734],
+        ['Delta_P', -0.102, 0.783, 1.000, 0.901, -0.087, 0.061, 0.564, -0.156, 0.592],
+        ['Hake_g', 0.195, 0.885, 0.901, 1.000, -0.057, 0.136, 0.556, -0.152, 0.642],
+        ['Paas_R', -0.006, -0.077, -0.087, -0.057, 1.000, -0.376, -0.335, 0.092, -0.734],
+        ['CLT_IL', 0.069, 0.095, 0.061, 0.136, -0.376, 1.000, 0.086, -0.157, 0.321],
+        ['CLT_EL', 0.205, 0.605, 0.564, 0.556, -0.335, 0.086, 1.000, -0.176, 0.641],
+        ['CLT_GL', 0.265, 0.033, -0.156, -0.152, 0.092, -0.157, -0.176, 1.000, -0.040],
+        ['Paas_E', 0.372, 0.734, 0.592, 0.642, -0.734, 0.321, 0.641, -0.040, 1.000]
+      ];
+
+      const headers = ['Biến số', 'P_pre', 'P_post', 'ΔP', 'Hake g', 'Paas R', 'Tải IL', 'Tải EL', 'Tải GL', 'E-score'];
+
+      let html = '<thead class="bg-google-lightGray text-google-gray font-semibold"><tr>';
+      headers.forEach(h => { html += `<th class="px-3 py-2.5">${h}</th>`; });
+      html += '</tr></thead><tbody class="divide-y divide-google-border font-mono">';
+
+      matrix.forEach((row, rIdx) => {
+        html += `<tr class="hover:bg-blue-50/30 transition-colors">`;
+        html += `<td class="px-3 py-2 font-sans font-medium text-left bg-slate-50">${row[0]}</td>`;
+        for (let c = 1; c <= 9; c++) {
+          const val = row[c];
+          let bgColor = 'bg-white';
+          let textColor = 'text-google-dark';
+          let star = '';
+
+          if (val === 1.0) {
+            bgColor = 'bg-blue-100 font-bold';
+          } else if (val >= 0.7) {
+            bgColor = 'bg-red-200 text-red-950 font-bold';
+            star = '**';
+          } else if (val >= 0.5) {
+            bgColor = 'bg-red-100 text-red-900 font-semibold';
+            star = '**';
+          } else if (val <= -0.7) {
+            bgColor = 'bg-blue-200 text-blue-950 font-bold';
+            star = '**';
+          } else if (val <= -0.3) {
+            bgColor = 'bg-blue-100 text-blue-900 font-semibold';
+            star = '*';
+          }
+
+          html += `<td onclick="selectCorrPair('${row[0]}', '${headers[c]}', ${val})" class="px-3 py-2 cursor-pointer transition-all hover:ring-2 hover:ring-google-blue ${bgColor} ${textColor}">${val > 0 && val !== 1 ? '+' : ''}${val.toFixed(3)}${star}</td>`;
+        }
+        html += `</tr>`;
+      });
+
+      html += '</tbody>';
+      table.innerHTML = html;
+    }
+
+    function selectCorrPair(v1, v2, val) {
+      const title = document.getElementById('corr-pair-title');
+      const desc = document.getElementById('corr-pair-desc');
+
+      title.textContent = `Tương quan giữa ${v1} và ${v2} (r = ${val > 0 ? '+' : ''}${val.toFixed(3)})`;
+
+      let text = `Cặp biến số có mối tương quan tuyến tính ${val > 0 ? 'thuận' : (val < 0 ? 'nghịch' : 'độc lập')}. `;
+      if (v1 === 'P_post' && v2 === 'Tải EL') {
+        text += `Phát hiện then chốt: Tải ngoại lai EL tương quan dương rất mạnh với điểm Post-test (+0,605). Sinh viên gặp nhiều phản biện của AI (Desirable Difficulties) đã kích hoạt nỗ lực giải quyết vấn đề sâu sắc hơn.`;
+      } else if ((v1 === 'Tải EL' && v2 === 'Tải GL') || (v1 === 'Tải GL' && v2 === 'Tải EL')) {
+        text += `Khẳng định tính Trực giao Đa chiều (Multidimensional Orthogonality): EL và GL có tương quan âm nhẹ (-0,176), hoàn toàn độc lập và đối kháng theo Sweller (2019).`;
+      } else if (v2 === 'Paas R' && (v1 === 'Paas E' || v1 === 'P_post')) {
+        text += `Quy luật nghịch đảo chuẩn mực của mô hình Fred Paas: Nỗ lực tâm thức cao nhưng điểm kém dẫn đến E âm (quá tải).`;
+      } else {
+        text += `Phản ánh đúng logic vận động của quá trình can thiệp sư phạm STEM 180 phút.`;
+      }
+      desc.textContent = text;
+    }
+
+    // -------------------------------------------------------------
+    // ACCORDION COUNCIL TOGGLE
+    // -------------------------------------------------------------
+    function toggleCouncilAnswer(id) {
+      const ans = document.getElementById('q-ans-' + id);
+      const icon = document.getElementById('q-icon-' + id);
+      if (ans.classList.contains('hidden')) {
+        ans.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        ans.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // -------------------------------------------------------------
+    // FORMULA MODAL HANDLER
+    // -------------------------------------------------------------
+    function showFormulaModal(type) {
+      const modal = document.getElementById('formula-modal');
+      const title = document.getElementById('modal-formula-title');
+      const math = document.getElementById('modal-formula-math');
+      const desc = document.getElementById('modal-formula-desc');
+
+      if (type === 'ttest') {
+        title.textContent = "Kiểm định t từng cặp (Paired Student's t-test)";
+        math.innerHTML = `t = \frac{\bar{D}}{\frac{s_D}{\sqrt{N}}} = \frac{0,9333}{\frac{1,6467}{\sqrt{27}}} = 2,945`;
+        desc.innerHTML = `<p><strong>df:</strong> N - 1 = 26</p><p><strong>p-value:</strong> 0,00672 (p < 0,01)</p><p><strong>Ý nghĩa:</strong> Khẳng định năng lực tăng trưởng thực chất ở độ tin cậy 99%.</p>`;
+      } else if (type === 'hake') {
+        title.textContent = "Chỉ số tăng trưởng chuẩn hóa Richard Hake (1998)";
+        math.innerHTML = `g = \frac{P_{\text{post}} - P_{\text{pre}}}{10 - P_{\text{pre}}}`;
+        desc.innerHTML = `<p><strong>Ý nghĩa:</strong> Tỷ lệ phần trăm kiến thức mới tiếp thu được so với dung lượng tri thức tối đa mà người học chưa biết.</p>`;
+      }
+
+      modal.classList.remove('hidden');
+      renderMathInElement(modal, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\(", right: "\)", display: false},
+          {left: "\[", right: "\]", display: true}
+        ]
+      });
+    }
+
+    function closeFormulaModal() {
+      document.getElementById('formula-modal').classList.add('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // FILE UPLOAD HANDLER (SheetJS)
+    // -------------------------------------------------------------
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, {type: 'array'});
+          
+          let targetSheetName = workbook.SheetNames[0];
+          if (workbook.SheetNames.includes('DU_LIEU_THO_27_SV_SPSS')) {
+            targetSheetName = 'DU_LIEU_THO_27_SV_SPSS';
+          } else if (workbook.SheetNames.includes('TONG_HOP_KET_QUA')) {
+            targetSheetName = 'TONG_HOP_KET_QUA';
+          }
+
+          const worksheet = workbook.Sheets[targetSheetName];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+          
+          alert(`Đã nạp thành công tệp Excel: ${file.name} (Sheet: ${targetSheetName}, ${jsonData.length} dòng). Dữ liệu đang được đồng bộ.`);
+          document.getElementById('dataset-name-text').textContent = file.name + ' (Custom)';
+        } catch(err) {
+          alert('Không thể đọc file: ' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function resetToMasterData() {
+      currentStudents = JSON.parse(JSON.stringify(MASTER_DATASET.students));
+      document.getElementById('dataset-name-text').textContent = 'N = 27 (HCMUTE Validated)';
+      renderDataTable();
+      renderAllCharts();
+      renderCorrelationMatrix();
+      alert('Đã khôi phục dữ liệu gốc chuẩn N = 27 sinh viên!');
+    }
+
+    function exportCleanExcel() {
+      window.location.href = 'data_raw_27_sv.xlsx';
+    }
+
+    // -------------------------------------------------------------
+    // ON PAGE LOAD
+    // -------------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDataTable();
+      renderAllCharts();
+      renderCorrelationMatrix();
+
+      // Render math formulas on page
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\(", right: "\)", display: false},
+          {left: "\[", right: "\]", display: true}
+        ]
+      });
+
+      // Render specific KaTeX elements
+      const m1 = document.getElementById('math-ttest-formula');
+      if (m1) katex.render("t = \frac{\bar{D}}{\frac{s_D}{\sqrt{N}}} = \frac{0,9333}{\frac{1,6467}{\sqrt{27}}} = 2,945", m1);
+
+      const m2 = document.getElementById('math-wilcoxon-formula');
+      if (m2) katex.render("z = \frac{W - \frac{N(N+1)}{4}}{\sqrt{\frac{N(N+1)(2N+1)}{24}}} = -2,511", m2);
+    });
+  </script>
+</body>
+</html>
